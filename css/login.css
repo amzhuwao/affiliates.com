@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 :root {
     --bg-primary: #0d0d0f;
     --bg-secondary: #16171a;
@@ -26,17 +31,19 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: -50%;
     right: -20%;
     width: 600px;
@@ -44,11 +51,12 @@ body::before {
     background: radial-gradient(circle, rgba(201, 203, 216, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     animation: float 20s ease-in-out infinite;
+    pointer-events: none;
 }
 
 body::after {
     content: '';
-    position: absolute;
+    position: fixed;
     bottom: -30%;
     left: -10%;
     width: 500px;
@@ -56,6 +64,7 @@ body::after {
     background: radial-gradient(circle, rgba(201, 203, 216, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     animation: float 15s ease-in-out infinite reverse;
+    pointer-events: none;
 }
 
 @keyframes float {
@@ -72,6 +81,7 @@ body::after {
     z-index: 1;
     width: 100%;
     max-width: 440px;
+    margin: 0 auto;
 }
 
 .login-card {
@@ -333,12 +343,23 @@ input.invalid {
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
     .login-card {
-        padding: 36px 28px;
+        padding: 36px 24px;
+        width: 100%;
     }
 
     .logo h1 {
         font-size: 24px;
+    }
+
+    body::before,
+    body::after {
+        width: 400px;
+        height: 400px;
     }
 }
 
