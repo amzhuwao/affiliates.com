@@ -8,5 +8,8 @@ define('DB_PASS', '@Fl011326'); // XAMPP default empty
 // Company WhatsApp number (international, no +): e.g. 263771234567
 define('COMPANY_WHATSAPP', '263771234567');
 
-// Email address used as From for status notifications (change to your real email)
-//define('MAIL_FROM', 'support@yourdomain.com');
+// Default commission percent (e.g., 10.00 = 10%)
+define('DEFAULT_COMMISSION_RATE', 10.00);
+
+// Default withholding tax percent applied only if affiliate has no tax_clearance
+define('DEFAULT_WITHHOLDING_RATE', 15.00); // adjust to local tax rule

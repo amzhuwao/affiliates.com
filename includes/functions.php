@@ -1,11 +1,8 @@
 <?php
 // includes/functions.php
-// use PHPMailer\PHPMailer\PHPMailer;
-//use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/smtp_config.php'; 
-//require __DIR__ . '/../vendor/autoload.php';;  // Adjust path if your script is elsewhere
 require_once __DIR__ . '/db.php';
 
 function generateAffiliateId($db) {
@@ -31,45 +28,111 @@ function isPost() {
 }
 
 /**
- * Send account status notification email to an affiliate.
- *
- * @param array $affiliate Row from affiliates table with at least email, full_name, affiliate_id
- * @param string $oldStatus
- * @param string $newStatus
- * @param string $adminName (optional) - who performed action
- * @return bool
+ * Determine commission rate to use for a quotation.
+ * If quotation has commission_rate (non-null) return it, otherwise use default.
  */
-/* function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin') {
-    if (empty($affiliate['email'])) return false; // no email to send to
+function getCommissionRateForQuotation(array $quotation): float {
+    if (!empty($quotation['commission_rate']) && is_numeric($quotation['commission_rate'])) {
+        return (float)$quotation['commission_rate'];
+    }
+    return (float) DEFAULT_COMMISSION_RATE;
+}
 
-    $to = $affiliate['email'];
-    $subject = "Account status changed: {$newStatus}";
-    $time = date('Y-m-d H:i:s');
-    $message = "Hello " . ($affiliate['full_name'] ?? $affiliate['affiliate_id']) . ",\n\n";
-    $message .= "This is to inform you that your affiliate account (ID: {$affiliate['affiliate_id']}) ";
-    $message .= "has been changed from '{$oldStatus}' to '{$newStatus}' by {$adminName} on {$time}.\n\n";
+/**
+ * Calculate commission details given deal amount and affiliate info.
+ * Returns array: gross_commission, withholding_tax, net_commission, commission_rate
+ */
+function calculateCommission(float $dealAmount, array $affiliate, ?float $overrideRate = null): array {
+    $rate = is_null($overrideRate) ? (float)DEFAULT_COMMISSION_RATE : (float)$overrideRate;
+    // If affiliate has commission_rate in quoting, pass it instead of override
+    $gross = round($dealAmount * ($rate / 100.0), 2);
 
-    if ($newStatus === 'suspended') {
-        $message .= "While your account is suspended you will not be able to log in or receive commission payouts.\n\n";
-    } elseif ($newStatus === 'deleted') {
-        $message .= "Your account has been marked as deleted (soft-delete). If this is a mistake please contact support.\n\n";
-    } elseif ($newStatus === 'active') {
-        $message .= "Your account is now active. You may log in and continue using your referral link.\n\n";
+    // Withholding applies if tax_clearance is false/0
+    $withholding = 0.00;
+    if (empty($affiliate['tax_clearance'])) {
+        $withholding = round($gross * (DEFAULT_WITHHOLDING_RATE / 100.0), 2);
     }
 
-    $message .= "Regards,\n";
-    $message .= $adminName . "\n";
-
-    // Prepare headers
-    $headers = [];
-    $headers[] = 'From: ' . "amzhuwao@gmail.com";
-    $headers[] = 'Reply-To: ' . "amzhuwao@gmail.com";
-    $headers[] = 'X-Mailer: PHP/' . phpversion();
-
-    // Use mail() - on many local environments mail() is not configured;
-    // If mail() doesn't work on your host, consider setting up SMTP (PHPMailer) or an external provider.
-    return @mail($to, $subject, $message, implode("\r\n", $headers));
-} */
-function validateEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    $net = round($gross - $withholding, 2);
+    return [
+        'commission_rate' => $rate,
+        'gross_commission' => $gross,
+        'withholding_tax'   => $withholding,
+        'net_commission'    => $net
+    ];
 }
+
+/**
+ * Create commission record after a quotation is converted.
+ * Will insert into commissions table.
+ */
+function createCommissionRecord(PDO $db, int $quotationId, int $affiliateId, float $gross, float $withholding, float $net, float $rate) {
+    $stmt = $db->prepare("INSERT INTO commissions
+        (quotation_id, affiliate_id, gross_commission, withholding_tax, net_commission, commission_rate, created_at)
+        VALUES (:qid, :aid, :gross, :with, :net, :rate, NOW())");
+    $stmt->execute([
+        ':qid' => $quotationId,
+        ':aid' => $affiliateId,
+        ':gross' => $gross,
+        ':with' => $withholding,
+        ':net' => $net,
+        ':rate' => $rate
+    ]);
+    return $db->lastInsertId();
+}
+function getAffiliateById(PDO $db, int $affiliateId) {
+    $stmt = $db->prepare("SELECT * FROM affiliates WHERE id = :id");
+    $stmt->execute([':id' => $affiliateId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function sendQuotationStatusEmail(array $affiliate, array $quotation, string $oldStatus, string $newStatus, string $adminName = 'Admin'): bool {
+    if (empty($affiliate['email'])) {
+        return false;
+    }
+
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP Setup
+        $mail->isSMTP();
+        $mail->Host       = SMTP_HOST;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = SMTP_USERNAME;
+        $mail->Password   = SMTP_PASSWORD;
+        $mail->SMTPSecure = SMTP_SECURE;
+        $mail->Port       = SMTP_PORT;
+
+        // Email Headers
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->addAddress($affiliate['email'], $affiliate['full_name']);
+
+        // Email Content
+        $mail->isHTML(false);
+        $mail->Subject = "Quotation Status Update (#{$quotation['id']})";
+
+        $message = "Hello {$affiliate['full_name']},\n\n";
+        $message .= "Your quotation request (#{$quotation['id']}) status has changed.\n";
+        $message .= "Old Status: {$oldStatus}\n";
+        $message .= "New Status: {$newStatus}\n\n";
+
+        if ($newStatus === 'approved') {
+            $message .= "An administrator has approved your quotation. Please standby for final pricing.";
+        } elseif ($newStatus === 'declined') {
+            $message .= "Unfortunately, your quotation request was declined.\nYou may request again or contact support for more details.";
+        } elseif ($newStatus === 'converted') {
+            $message .= "Congratulations! This quotation has been converted to a sale.\nYour commission has been processed as per program rules.";
+        }
+
+        $message .= "\n\nRegards,\n{$adminName}\n";
+
+        $mail->Body = $message;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Quote Mail error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
+

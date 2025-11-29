@@ -7,8 +7,8 @@ use PHPMailer\PHPMailer\Exception;
 //require __DIR__ . '/../vendor/autoload.php'; // adjust path to Composer autoload
 
 // Define sender info
-define('MAIL_FROM', 'your_gmail@gmail.com'); // your Gmail address
-define('MAIL_FROM_NAME', 'Your Name');
+//define('MAIL_FROM', 'your_gmail@gmail.com'); // your Gmail address
+//define('MAIL_FROM_NAME', 'Your Name');
 
 function sendStatusEmail($toEmail, $toName, $subject, $body) {
     $mail = new PHPMailer(true);

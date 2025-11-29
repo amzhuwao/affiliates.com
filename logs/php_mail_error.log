@@ -75,3 +75,69 @@ Stack trace:
 #0 {main}
   thrown in /var/www/affiliates.com/admin/test_email.php on line 25
 [29-Nov-2025 16:08:30 Africa/Khartoum] PHP Parse error:  syntax error, unexpected token "<<", expecting end of file in /var/www/affiliates.com/includes/functions.php on line 3
+[29-Nov-2025 17:08:04 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 10
+[29-Nov-2025 17:08:04 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM_NAME already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 11
+[29-Nov-2025 17:08:04 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 10
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM_NAME already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 11
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 10
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Warning:  Constant MAIL_FROM_NAME already defined in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 11
+[29-Nov-2025 17:12:28 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:13:02 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:14:23 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:22
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 22
+[29-Nov-2025 17:16:47 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:16:49 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:24:36 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:24:36 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:24:37 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:24:37 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:28:02 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:28:03 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:28:03 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 17:28:04 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
