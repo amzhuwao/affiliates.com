@@ -1,15 +1,11 @@
 <?php
 // includes/functions.php
-<<<<<<< HEAD
-//require __DIR__ . '/../vendor/autoload.php';  // Adjust path if your script is elsewhere
-=======
-/* use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+//use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/smtp_config.php'; */
-require __DIR__ . '/../vendor/autoload.php';;  // Adjust path if your script is elsewhere
->>>>>>> a5910837d93cb78e1e6f723e97d47bc10063118d
+require_once __DIR__ . '/smtp_config.php'; 
+//require __DIR__ . '/../vendor/autoload.php';;  // Adjust path if your script is elsewhere
 require_once __DIR__ . '/db.php';
 
 function generateAffiliateId($db) {
