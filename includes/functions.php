@@ -1,11 +1,6 @@
 <?php
 // includes/functions.php
-/* use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/smtp_config.php'; */
-require __DIR__ . '/vendor/autoload.php';  // Adjust path if your script is elsewhere
+//require __DIR__ . '/../vendor/autoload.php';  // Adjust path if your script is elsewhere
 require_once __DIR__ . '/db.php';
 
 function generateAffiliateId($db) {
@@ -39,7 +34,7 @@ function isPost() {
  * @param string $adminName (optional) - who performed action
  * @return bool
  */
-function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin') {
+/* function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin') {
     if (empty($affiliate['email'])) return false; // no email to send to
 
     $to = $affiliate['email'];
@@ -62,14 +57,14 @@ function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus,
 
     // Prepare headers
     $headers = [];
-    $headers[] = 'From: ' . MAIL_FROM;
-    $headers[] = 'Reply-To: ' . MAIL_FROM;
+    $headers[] = 'From: ' . "amzhuwao@gmail.com";
+    $headers[] = 'Reply-To: ' . "amzhuwao@gmail.com";
     $headers[] = 'X-Mailer: PHP/' . phpversion();
 
     // Use mail() - on many local environments mail() is not configured;
     // If mail() doesn't work on your host, consider setting up SMTP (PHPMailer) or an external provider.
     return @mail($to, $subject, $message, implode("\r\n", $headers));
-}
+} */
 function validateEmail($email) {
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }

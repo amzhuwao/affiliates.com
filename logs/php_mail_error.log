@@ -1,0 +1,76 @@
+[29-Nov-2025 11:36:10 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/includes/vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/includes/functions.php on line 3
+[29-Nov-2025 11:36:10 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/includes/vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/includes/functions.php:3
+Stack trace:
+#0 /var/www/affiliates.com/admin/test_email.php(11): require_once()
+#1 {main}
+  thrown in /var/www/affiliates.com/includes/functions.php on line 3
+[29-Nov-2025 11:37:05 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Undefined constant "MAIL_FROM" in /var/www/affiliates.com/includes/functions.php:60
+Stack trace:
+#0 /var/www/affiliates.com/admin/test_email.php(19): sendStatusEmail()
+#1 {main}
+  thrown in /var/www/affiliates.com/includes/functions.php on line 60
+[29-Nov-2025 11:49:09 Africa/Khartoum] PHP Fatal error:  Cannot redeclare sendStatusEmail() (previously declared in /var/www/affiliates.com/includes/functions.php:37) in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 42
+[29-Nov-2025 11:50:07 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:50:07 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(29): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:55:40 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:55:40 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:55:41 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:55:41 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:02 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:02 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:03 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:03 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:04 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:04 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:04 Africa/Khartoum] PHP Warning:  require(/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:57:04 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/affiliates.com/vendor/phpmailer/phpmailer/src/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php:7
+Stack trace:
+#0 /var/www/affiliates.com/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/affiliates.com/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/affiliates.com/admin/test_email.php(25): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/affiliates.com/vendor/phpmailer/phpmailer/src/PHPMailer.php on line 7
+[29-Nov-2025 11:58:44 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[29-Nov-2025 13:48:25 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25
