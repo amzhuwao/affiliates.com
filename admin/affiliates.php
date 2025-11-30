@@ -45,216 +45,8 @@ $rows = $stmt->fetchAll();
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/affiliates.css">
-<style>
-/* Premium Confirmation Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.modal-content {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 32px;
-    max-width: 440px;
-    width: 90%;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 1px rgba(201, 203, 216, 0.15);
-    position: relative;
-    transform: scale(0.9) translateY(20px);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1) translateY(0);
-}
-
-.modal-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.3;
-    border-radius: 20px 20px 0 0;
-}
-
-.modal-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-icon {
-    animation: iconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
-}
-
-@keyframes iconPop {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.modal-icon.warning {
-    background: linear-gradient(135deg, rgba(255, 159, 10, 0.2) 0%, rgba(255, 159, 10, 0.1) 100%);
-    color: var(--warning);
-}
-
-.modal-icon.danger {
-    background: linear-gradient(135deg, rgba(255, 69, 58, 0.2) 0%, rgba(255, 69, 58, 0.1) 100%);
-    color: var(--error);
-}
-
-.modal-icon svg {
-    width: 32px;
-    height: 32px;
-}
-
-.modal-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-primary);
-    text-align: center;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-}
-
-.modal-message {
-    font-size: 15px;
-    color: var(--text-secondary);
-    text-align: center;
-    line-height: 1.6;
-    margin-bottom: 28px;
-    font-weight: 500;
-}
-
-.modal-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.modal-btn {
-    flex: 1;
-    padding: 14px 24px;
-    border: none;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: inherit;
-    position: relative;
-    overflow: hidden;
-}
-
-.modal-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-}
-
-.modal-btn:hover::before {
-    left: 100%;
-}
-
-.modal-btn-cancel {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1.5px solid var(--border);
-}
-
-.modal-btn-cancel:hover {
-    background: var(--bg-primary);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.1);
-}
-
-.modal-btn-confirm {
-    background: var(--accent);
-    color: var(--bg-primary);
-    border: 1.5px solid transparent;
-    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);
-}
-
-.modal-btn-confirm:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
-}
-
-.modal-btn-confirm.warning {
-    background: var(--warning);
-    box-shadow: 0 4px 16px rgba(255, 159, 10, 0.2);
-}
-
-.modal-btn-confirm.warning:hover {
-    background: #ffaa1a;
-    box-shadow: 0 8px 24px rgba(255, 159, 10, 0.35);
-}
-
-.modal-btn-confirm.danger {
-    background: var(--error);
-    box-shadow: 0 4px 16px rgba(255, 69, 58, 0.2);
-}
-
-.modal-btn-confirm.danger:hover {
-    background: #ff5a4a;
-    box-shadow: 0 8px 24px rgba(255, 69, 58, 0.35);
-}
-
-.modal-btn:active {
-    transform: translateY(0);
-}
-
-@media (max-width: 480px) {
-    .modal-content {
-        padding: 28px 24px;
-    }
-    
-    .modal-actions {
-        flex-direction: column;
-    }
-    
-    .modal-btn {
-        width: 100%;
-    }
-}
-</style>
+<link rel="stylesheet" href="../css/affiliates_modal.css">
+<link rel="stylesheet" href="../css/premium_table.css">
 </head>
 <body>
 
@@ -325,66 +117,56 @@ $rows = $stmt->fetchAll();
         </div>
 
         <!-- Affiliates table -->
-        <div class="table-wrapper">
-            <table class="affiliates-table">
+        <?php if (!empty($rows)): ?>
+        <div style="overflow-x: auto; margin: 0 -24px; padding: 0 24px;">
+            <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden;">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Affiliate ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Created</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                    <tr style="background: var(--bg-secondary); border-bottom: 2px solid var(--border);">
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">#</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Affiliate ID</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Name</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Phone</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Email</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Created</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Status</th>
+                        <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($rows)): ?>
-                    <tr>
-                        <td colspan="8">
-                            <div class="empty-state">
-                                <div class="empty-state-icon">📋</div>
-                                <div class="empty-state-text">No affiliates found.</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-
                     <?php foreach ($rows as $r): ?>
-                    <tr>
-                        <td data-label="#"><?=htmlspecialchars($r['id'])?></td>
-                        <td data-label="Affiliate ID"><strong><?=htmlspecialchars($r['affiliate_id'])?></strong></td>
-                        <td data-label="Name"><?=htmlspecialchars($r['full_name'])?></td>
-                        <td data-label="Phone"><?=htmlspecialchars($r['phone_number'])?></td>
-                        <td data-label="Email"><?=htmlspecialchars($r['email'] ?: '—')?></td>
-                        <td data-label="Created"><?=htmlspecialchars(date('M d, Y', strtotime($r['created_at'])))?></td>
-                        <td data-label="Status">
+                    <tr style="background: var(--bg-secondary); border-bottom: 1px solid var(--border); transition: all 0.3s ease;">
+                        <td data-label="#" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?=htmlspecialchars($r['id'])?></td>
+                        <td data-label="Affiliate ID" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 600;"><?=htmlspecialchars($r['affiliate_id'])?></td>
+                        <td data-label="Name" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?=htmlspecialchars($r['full_name'])?></td>
+                        <td data-label="Phone" style="padding: 20px 16px; font-size: 14px; color: var(--text-secondary); font-weight: 500;"><?=htmlspecialchars($r['phone_number'])?></td>
+                        <td data-label="Email" style="padding: 20px 16px; font-size: 14px; color: var(--text-secondary); font-weight: 500;"><?=htmlspecialchars($r['email'] ?: '—')?></td>
+                        <td data-label="Created" style="padding: 20px 16px; font-size: 13px; color: var(--text-secondary); font-weight: 500;"><?=htmlspecialchars(date('M d, Y', strtotime($r['created_at'])))?></td>
+                        <td data-label="Status" style="padding: 20px 16px; font-size: 14px;">
                             <span class="status-badge <?=htmlspecialchars($r['status'])?>">
-                                <?=htmlspecialchars($r['status'])?>
+                                <?=ucfirst(htmlspecialchars($r['status']))?>
                             </span>
                         </td>
-                        <td data-label="Actions">
-                            <div class="actions">
-                                <a href="view_affiliate.php?id=<?=htmlspecialchars($r['id'])?>" class="action-link">
+                        <td data-label="Actions" style="padding: 20px 16px;">
+                            <div class="actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <a href="view_affiliate.php?id=<?=htmlspecialchars($r['id'])?>" class="action-link" style="padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--text-primary); background: var(--bg-card); border-radius: 6px; text-decoration: none; transition: all 0.2s ease; border: 1px solid var(--border);">
                                     View
                                 </a>
-                                <a href="edit_affiliate.php?id=<?=htmlspecialchars($r['id'])?>" class="action-link">
+                                <a href="edit_affiliate.php?id=<?=htmlspecialchars($r['id'])?>" class="action-link" style="padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--text-primary); background: var(--bg-card); border-radius: 6px; text-decoration: none; transition: all 0.2s ease; border: 1px solid var(--border);">
                                     Edit
                                 </a>
                                 <?php if ($r['status'] === 'active'): ?>
                                     <a href="toggle_status.php?id=<?=htmlspecialchars($r['id'])?>&to=suspended"
-                                       class="action-link suspend">
+                                       class="action-link suspend" style="padding: 6px 12px; font-size: 13px; font-weight: 600; color: #ff9500; background: rgba(255, 149, 0, 0.1); border-radius: 6px; text-decoration: none; transition: all 0.2s ease; border: 1px solid rgba(255, 149, 0, 0.2);">
                                         Suspend
                                     </a>
                                 <?php else: ?>
                                     <a href="toggle_status.php?id=<?=htmlspecialchars($r['id'])?>&to=active"
-                                       class="action-link reactivate">
+                                       class="action-link reactivate" style="padding: 6px 12px; font-size: 13px; font-weight: 600; color: #34c759; background: rgba(52, 199, 89, 0.1); border-radius: 6px; text-decoration: none; transition: all 0.2s ease; border: 1px solid rgba(52, 199, 89, 0.2);">
                                         Reactivate
                                     </a>
                                 <?php endif; ?>
                                 <a href="delete_affiliate.php?id=<?=htmlspecialchars($r['id'])?>" 
-                                   class="action-link delete">
+                                   class="action-link delete" style="padding: 6px 12px; font-size: 13px; font-weight: 600; color: #ff453a; background: rgba(255, 69, 58, 0.1); border-radius: 6px; text-decoration: none; transition: all 0.2s ease; border: 1px solid rgba(255, 69, 58, 0.2);">
                                     Delete
                                 </a>
                             </div>
@@ -394,6 +176,13 @@ $rows = $stmt->fetchAll();
                 </tbody>
             </table>
         </div>
+        <?php else: ?>
+        <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+            <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">📋</div>
+            <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No affiliates found</p>
+            <p style="font-size: 14px; margin-bottom: 0;">Try adjusting your search criteria</p>
+        </div>
+        <?php endif; ?>
 
         <!-- Pagination -->
         <?php if ($pages > 1): ?>
@@ -440,6 +229,25 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
+// Add hover effect to table rows
+document.addEventListener('DOMContentLoaded', function() {
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.background = 'var(--bg-card)';
+            this.style.transform = 'scale(1.01)';
+            this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+            this.style.zIndex = '1';
+        });
+        row.addEventListener('mouseleave', function() {
+            this.style.background = 'var(--bg-secondary)';
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = 'none';
+            this.style.zIndex = 'auto';
+        });
+    });
+});
+
 // Premium Confirmation Modal System
 const confirmModal = {
     overlay: document.getElementById('confirmModal'),
