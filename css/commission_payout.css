@@ -1,0 +1,1179 @@
+/* Premium Commission Payout Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0d0d0f;
+    --bg-secondary: #16171a;
+    --bg-card: #1c1d21;
+    --accent: #c9cbd8;
+    --accent-dark: #a8aab5;
+    --accent-hover: #e0e1e8;
+    --text-primary: #f5f5f7;
+    --text-secondary: #8e8e93;
+    --border: #2c2c2e;
+    --border-light: #3a3a3c;
+    --error: #ff453a;
+    --success: #30d158;
+    --warning: #ff9f0a;
+    --info: #0a84ff;
+    --shadow-sm: rgba(0, 0, 0, 0.3);
+    --shadow-lg: rgba(0, 0, 0, 0.6);
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+    padding: 40px 20px;
+}
+
+/* Animated background effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    right: -15%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(201, 203, 216, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 25s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -25%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201, 203, 216, 0.03) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-40px, 40px) scale(1.05);
+    }
+}
+
+/* Main container */
+.payout-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Premium card wrapper */
+.payout-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px var(--shadow-lg), 0 0 1px rgba(201, 203, 216, 0.1);
+    backdrop-filter: blur(20px);
+    animation: slideUp 0.6s ease-out;
+    position: relative;
+}
+
+.payout-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.3;
+    border-radius: 20px 20px 0 0;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Back link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 24px;
+}
+
+.back-link:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(-4px);
+}
+
+.back-link svg {
+    flex-shrink: 0;
+}
+
+/* Header section */
+.page-header {
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: -0.8px;
+    text-shadow: 0 0 30px rgba(201, 203, 216, 0.15);
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0;
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    margin-bottom: -2px;
+}
+
+.tab svg {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.tab:hover {
+    color: var(--text-primary);
+    background: rgba(201, 203, 216, 0.05);
+}
+
+.tab:hover svg {
+    transform: scale(1.1);
+}
+
+.tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: rgba(201, 203, 216, 0.08);
+}
+
+.tab.active svg {
+    transform: scale(1.05);
+}
+
+/* Messages */
+.message {
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: messageSlide 0.5s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.success {
+    background: rgba(48, 209, 88, 0.08);
+    border: 1px solid rgba(48, 209, 88, 0.25);
+    color: var(--success);
+}
+
+.message svg {
+    flex-shrink: 0;
+}
+
+/* Table wrapper */
+.table-wrapper {
+    margin-bottom: 32px;
+    overflow: visible;
+}
+
+/* Premium table styling */
+.payout-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.payout-table thead {
+    background: var(--bg-secondary);
+}
+
+.payout-table thead tr {
+    border-radius: 12px;
+}
+
+.payout-table th {
+    padding: 18px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+.payout-table thead tr th:first-child {
+    border-radius: 12px 0 0 0;
+}
+
+.payout-table thead tr th:last-child {
+    border-radius: 0 12px 0 0;
+}
+
+.payout-table tbody tr {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.payout-table tbody tr::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.payout-table tbody tr:hover {
+    background: var(--bg-card);
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.payout-table tbody tr:hover::after {
+    opacity: 1;
+}
+
+.payout-table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 12px;
+}
+
+.payout-table tbody tr:last-child td:last-child {
+    border-radius: 0 0 12px 0;
+}
+
+.payout-table td {
+    padding: 20px 16px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+/* Column widths - Pending (7 columns) */
+.payout-table th:nth-child(1),
+.payout-table td:nth-child(1) {
+    width: 5%;
+}
+
+.payout-table th:nth-child(2),
+.payout-table td:nth-child(2) {
+    width: 20%;
+}
+
+.payout-table th:nth-child(3),
+.payout-table td:nth-child(3) {
+    width: 12%;
+}
+
+.payout-table th:nth-child(4),
+.payout-table td:nth-child(4) {
+    width: 12%;
+}
+
+.payout-table th:nth-child(5),
+.payout-table td:nth-child(5) {
+    width: 12%;
+}
+
+.payout-table th:nth-child(6),
+.payout-table td:nth-child(6) {
+    width: 14%;
+}
+
+.payout-table th:nth-child(7),
+.payout-table td:nth-child(7) {
+    width: 25%;
+    text-align: center;
+}
+
+/* Column widths - Paid (8 columns) */
+.payout-table thead tr:has(th:nth-child(8)) th:nth-child(7),
+.payout-table tbody tr:has(td:nth-child(8)) td:nth-child(7) {
+    width: 15%;
+    text-align: left;
+}
+
+.payout-table thead tr:has(th:nth-child(8)) th:nth-child(8),
+.payout-table tbody tr:has(td:nth-child(8)) td:nth-child(8) {
+    width: 18%;
+    text-align: left;
+}
+
+/* Money values */
+.money-value {
+    font-weight: 600;
+    color: var(--success);
+}
+
+/* Payment badge */
+.payment-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, rgba(201, 203, 216, 0.12) 0%, rgba(201, 203, 216, 0.05) 100%);
+    border: 1px solid rgba(201, 203, 216, 0.2);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: capitalize;
+}
+
+/* Action button */
+.action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+/* Button-specific resets for desktop */
+button.action-link {
+    border: 1px solid var(--border);
+    background: var(--bg-primary);
+}
+
+.action-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(201, 203, 216, 0.15);
+}
+
+/* Modal Base Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px var(--shadow-lg);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* Confirmation Modal */
+#confirmModal {
+    z-index: 10000;
+}
+
+.confirm-modal {
+    max-width: 500px;
+    text-align: center;
+}
+
+.modal-icon {
+    width: 80px;
+    height: 80px;
+    margin: 32px auto 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-icon.warning {
+    background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 159, 10, 0.05) 100%);
+    border: 2px solid rgba(255, 159, 10, 0.3);
+}
+
+.modal-icon svg {
+    width: 48px;
+    height: 48px;
+    color: var(--warning);
+    stroke-width: 2;
+}
+
+.confirm-modal .modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 32px 16px;
+    letter-spacing: -0.5px;
+}
+
+.modal-message {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 32px 32px;
+    font-weight: 500;
+}
+
+.confirm-modal .modal-actions {
+    padding: 24px 32px 32px;
+    margin: 0;
+    border-top: 1px solid var(--border);
+}
+
+.modal-header {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 32px;
+}
+
+/* Commission Details in Modal */
+.commission-details {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row.highlight {
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 2px solid var(--border);
+}
+
+.detail-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.detail-value.money {
+    color: var(--success);
+    font-size: 18px;
+}
+
+.detail-row.highlight .detail-value {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Payment Form in Modal */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-form label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+}
+
+.payment-form input[type="text"],
+.payment-form textarea {
+    width: 100%;
+    padding: 15px 18px;
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    font-weight: 500;
+}
+
+.payment-form input:hover,
+.payment-form textarea:hover {
+    border-color: var(--border-light);
+}
+
+.payment-form input:focus,
+.payment-form textarea:focus {
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+    transform: translateY(-1px);
+}
+
+.payment-form input::placeholder,
+.payment-form textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.4;
+}
+
+.payment-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.modal-btn:hover::before {
+    left: 100%;
+}
+
+.modal-btn-cancel {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border);
+}
+
+.modal-btn-cancel:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.modal-btn-confirm {
+    background: var(--accent);
+    color: var(--bg-primary);
+    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);
+}
+
+.modal-btn-confirm:hover {
+    transform: translateY(-2px);
+    background: var(--accent-hover);
+    box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
+}
+
+.modal-btn:active {
+    transform: translateY(0);
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.empty-state-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.empty-state-text {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Mobile responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 24px 16px;
+    }
+
+    .payout-card {
+        padding: 32px 24px;
+        border-radius: 16px;
+    }
+
+    .page-header {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+    }
+
+    /* Tabs mobile */
+    .tabs {
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .tab {
+        flex: 1;
+        justify-content: center;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .tab svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Mobile table layout - Card style (matching affiliates.php) */
+    .table-wrapper {
+        margin: 0 -24px;
+        padding: 0 24px;
+    }
+
+    .payout-table thead {
+        display: none;
+    }
+
+    .payout-table,
+    .payout-table tbody,
+    .payout-table tr,
+    .payout-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .payout-table tbody tr {
+        margin-bottom: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 0;
+        background: var(--bg-secondary);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .payout-table tbody tr::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    }
+
+    .payout-table tbody tr::after {
+        display: none;
+    }
+
+    .payout-table tbody tr:hover {
+        transform: none;
+    }
+
+    .payout-table tbody tr:last-child td:first-child,
+    .payout-table tbody tr:last-child td:last-child {
+        border-radius: 0;
+    }
+
+    /* Card header with ID */
+    .payout-table td:first-child {
+        padding: 20px 20px 16px;
+        margin: 0;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-card);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    .payout-table td:first-child::before {
+        content: 'ID #';
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-right: 6px;
+    }
+
+    /* Content rows */
+    .payout-table td:not(:first-child):not(:last-child) {
+        padding: 16px 20px;
+        border: none;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 12px;
+        align-items: center;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.3);
+    }
+
+    .payout-table td:not(:first-child):not(:last-child)::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        text-align: left;
+    }
+
+    /* Keep created date on one line */
+    .payout-table td:nth-child(6) {
+        white-space: nowrap;
+    }
+
+    /* Affiliate styling */
+    .payout-table td:nth-child(2) {
+        padding-top: 20px;
+        border-bottom: none;
+    }
+
+    .payout-table td:nth-child(2) {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    /* Actions section - matching affiliates.css exactly */
+    .payout-table td:last-child {
+        padding: 24px 20px;
+        margin: 0;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .payout-table td:last-child::before {
+        display: none;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .action-link {
+        width: 90%;
+        max-width: 260px;
+        text-align: center;
+        justify-content: center;
+        padding: 14px 20px;
+        display: flex;
+        margin: 0 auto;
+    }
+
+    /* Button-specific resets to match anchor tag behavior */
+    .action-link.view-btn {
+        width: 90%;
+        max-width: 260px;
+        box-sizing: border-box;
+    }
+
+    button.action-link {
+        width: 90%;
+        max-width: 260px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* For paid commissions - show payment details in mobile */
+    .payout-table td:nth-child(7) {
+        padding: 16px 20px;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 12px;
+        align-items: center;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.3);
+    }
+
+    .payout-table td:nth-child(7)::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        text-align: left;
+    }
+
+    .payout-table td:nth-child(8) {
+        padding: 16px 20px;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 12px;
+        align-items: center;
+        border-bottom: none;
+    }
+
+    .payout-table td:nth-child(8)::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        text-align: left;
+    }
+
+    /* Modal adjustments for mobile */
+    .modal-overlay {
+        padding: 16px;
+    }
+
+    .modal-header {
+        padding: 24px 24px 20px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    .commission-details {
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .detail-row {
+        padding: 10px 0;
+    }
+
+    .detail-label {
+        font-size: 12px;
+    }
+
+    .detail-value {
+        font-size: 15px;
+    }
+
+    .detail-value.money {
+        font-size: 16px;
+    }
+
+    .detail-row.highlight .detail-value {
+        font-size: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        margin-top: 24px;
+        padding-top: 20px;
+    }
+
+    .modal-btn {
+        width: 100%;
+    }
+
+    /* Confirmation modal mobile adjustments */
+    .modal-icon {
+        width: 64px;
+        height: 64px;
+        margin: 24px auto 20px;
+    }
+
+    .modal-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .confirm-modal .modal-title {
+        font-size: 20px;
+        margin: 0 24px 12px;
+    }
+
+    .modal-message {
+        font-size: 14px;
+        margin: 0 24px 24px;
+    }
+
+    .confirm-modal .modal-actions {
+        padding: 20px 24px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .payout-card {
+        padding: 24px 20px;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .back-link {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    body::before,
+    body::after {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-dark);
+}
+

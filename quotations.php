@@ -19,11 +19,11 @@ $stmtPending = $db->prepare("SELECT COUNT(*) FROM quotations WHERE affiliate_id 
 $stmtPending->execute([':aid' => $_SESSION['user_id']]);
 $pendingCount = $stmtPending->fetchColumn();
 
-$stmtApproved = $db->prepare("SELECT COUNT(*) FROM quotations WHERE affiliate_id = :aid AND status = 'approved'");
+$stmtApproved = $db->prepare("SELECT COUNT(*) FROM quotations WHERE affiliate_id = :aid AND (status = 'approved' OR status = 'converted')");
 $stmtApproved->execute([':aid' => $_SESSION['user_id']]);
 $approvedCount = $stmtApproved->fetchColumn();
 
-$stmtRejected = $db->prepare("SELECT COUNT(*) FROM quotations WHERE affiliate_id = :aid AND status = 'rejected'");
+$stmtRejected = $db->prepare("SELECT COUNT(*) FROM quotations WHERE affiliate_id = :aid AND status = 'declined'");
 $stmtRejected->execute([':aid' => $_SESSION['user_id']]);
 $rejectedCount = $stmtRejected->fetchColumn();
 ?>
@@ -218,8 +218,8 @@ $rejectedCount = $stmtRejected->fetchColumn();
                                     $status = htmlspecialchars($r['status']);
                                     $statusClass = '';
                                     if ($status === 'pending') $statusClass = 'suspended';
-                                    elseif ($status === 'approved') $statusClass = 'active';
-                                    elseif ($status === 'rejected') $statusClass = 'deleted';
+                                    elseif ($status === 'approved' || $status === 'converted') $statusClass = 'active';
+                                    elseif ($status === 'declined') $statusClass = 'deleted';
                                     ?>
                                     <span class="status-badge <?php echo $statusClass; ?>">
                                         <?php echo ucfirst($status); ?>

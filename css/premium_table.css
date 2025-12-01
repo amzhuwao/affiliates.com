@@ -95,14 +95,14 @@
         text-align: left;
     }
 
-    /* Actions cell (last) */
-    table td:last-child {
+    /* Actions cell (last) - only style if it contains .actions div */
+    table td:last-child:has(.actions) {
         padding: 20px !important;
         border: none !important;
         display: block !important;
     }
 
-    table td:last-child::before {
+    table td:last-child:has(.actions)::before {
         content: 'ACTIONS';
         display: block;
         font-size: 11px;
@@ -113,6 +113,27 @@
         margin-bottom: 12px;
     }
 
+    /* Last cell without actions - treat as regular content cell */
+    table td:last-child:not(:has(.actions)) {
+        padding: 16px 20px !important;
+        border: none !important;
+        display: grid !important;
+        grid-template-columns: 100px 1fr;
+        gap: 12px;
+        align-items: center;
+        border-bottom: none !important;
+    }
+
+    table td:last-child:not(:has(.actions))::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        text-align: left;
+    }
+
     /* Actions buttons stacking */
     table td:last-child .actions {
         display: flex !important;
@@ -120,7 +141,8 @@
         gap: 8px !important;
     }
 
-    table td:last-child .actions a {
+    table td:last-child .actions a,
+    table td:last-child .actions button {
         width: 100% !important;
         text-align: center !important;
         display: block !important;
@@ -156,4 +178,5 @@
         transition: all 0.3s ease;
     }
 }
+
 
