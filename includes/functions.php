@@ -1,9 +1,24 @@
 <?php
 // includes/functions.php
+// 1. Define the correct path to the PHPMailer files
+// This assumes the structure: email_test/PHPMailer/src/
+$path_to_phpmailer = __DIR__ . '/../PHPMailer/src/';
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/smtp_config.php'; 
-require_once __DIR__ . '/db.php';
+// Use namespaces for clarity
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// 2. Load the necessary PHPMailer classes
+require $path_to_phpmailer . 'Exception.php';
+require $path_to_phpmailer . 'PHPMailer.php';
+require $path_to_phpmailer . 'SMTP.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/smtp_config.php';
+
+// Define the sender's details (constants with safe fallback)
+if (!defined('MAIL_FROM')) define('MAIL_FROM', 'amzhuwao@gmail.com'); // This should usually match your SMTP username
+if (!defined('MAIL_FROM_NAME')) define('MAIL_FROM_NAME', 'Affiliate Program');
 
 function generateAffiliateId($db) {
     $stmt = $db->query("SELECT affiliate_id FROM affiliates ORDER BY id DESC LIMIT 1");
@@ -95,13 +110,22 @@ function sendQuotationStatusEmail(array $affiliate, array $quotation, string $ol
 
     try {
         // SMTP Setup
+        $mail->SMTPDebug = 0; // change to SMTP::DEBUG_SERVER to enable debug output
         $mail->isSMTP();
-        $mail->Host       = SMTP_HOST;
-        $mail->SMTPAuth   = true;
-        $mail->Username   = SMTP_USERNAME;
-        $mail->Password   = SMTP_PASSWORD;
-        $mail->SMTPSecure = SMTP_SECURE;
-        $mail->Port       = SMTP_PORT;
+        $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
+        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
+        $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
+        // Map textual secure setting to PHPMailer constants
+        if (defined('SMTP_SECURE')) {
+            $secure = strtolower(SMTP_SECURE);
+            if ($secure === 'ssl') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            } elseif ($secure === 'tls' || $secure === 'starttls') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            }
+        }
+        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
 
         // Email Headers
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
@@ -136,3 +160,67 @@ function sendQuotationStatusEmail(array $affiliate, array $quotation, string $ol
     }
 }
 
+function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin') {
+    if (empty($affiliate['email'])) return false; // no email to send to
+    
+    $to = $affiliate['email'];
+    $subject = "Account status changed: {$newStatus}";
+    $time = date('Y-m-d H:i:s');
+    $message = "Hello " . ($affiliate['full_name'] ?? $affiliate['affiliate_id']) . ",\n\n";
+    $message .= "This is to inform you that your affiliate account (ID: {$affiliate['affiliate_id']}) ";
+    $message .= "has been changed from '{$oldStatus}' to '{$newStatus}' by {$adminName} on {$time}.\n\n";
+
+    if ($newStatus === 'suspended') {
+        $message .= "While your account is suspended you will not be able to log in or receive commission payouts.\n\n";
+    } elseif ($newStatus === 'deleted') {
+        $message .= "Your account has been marked as deleted (soft-delete). If this is a mistake please contact support.\n\n";
+    } elseif ($newStatus === 'active') {
+        $message .= "Your account is now active. You may log in and continue using your referral link.\n\n";
+    }
+
+    $message .= "Regards,\n";
+    $message .= $adminName . "\n";
+
+    // Try sending via PHPMailer (SMTP) first
+    $mail = new PHPMailer(true);
+    try {
+        $mail->SMTPDebug = 0; // set to SMTP::DEBUG_SERVER for debugging
+        $mail->isSMTP();
+        $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
+        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
+        $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
+        if (defined('SMTP_SECURE')) {
+            $secure = strtolower(SMTP_SECURE);
+            if ($secure === 'ssl') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            } elseif ($secure === 'tls' || $secure === 'starttls') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            }
+        }
+        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
+
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->addAddress($to, $affiliate['full_name'] ?? '');
+        $mail->isHTML(false);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        // Log both the Exception message and PHPMailer's ErrorInfo for diagnosis
+        error_log("Status Mail error: " . $e->getMessage() . " | PHPMailer: " . $mail->ErrorInfo);
+        // Fallback to PHP mail() with proper headers
+        $headers = [];
+        $headers[] = 'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM . '>';
+        $headers[] = 'Reply-To: ' . MAIL_FROM;
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/plain; charset=utf-8';
+        $ok = @mail($to, $subject, $message, implode("\r\n", $headers));
+        if (!$ok) {
+            error_log("Fallback mail() failed for {$to}");
+        }
+        return $ok;
+    }
+}

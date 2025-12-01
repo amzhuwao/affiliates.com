@@ -141,3 +141,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /var/www/affiliates.com/admin/test_email.php on line 25
+[01-Dec-2025 11:46:36 Africa/Khartoum] PHP Fatal error:  Uncaught Error: Class "PHPMailer\PHPMailer\PHPMailer" not found in /var/www/affiliates.com/admin/test_email.php:25
+Stack trace:
+#0 {main}
+  thrown in /var/www/affiliates.com/admin/test_email.php on line 25

@@ -1,13 +1,27 @@
 <?php
 // SMTP settings for PHPMailer
+// Load from environment variables where possible. Example env names:
+// SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USERNAME, SMTP_PASSWORD,
+// MAIL_FROM, MAIL_FROM_NAME
 
-define('SMTP_HOST', 'smtp.gmail.com'); // Gmail SMTP
-define('SMTP_PORT', 587);              // TLS port
-define('SMTP_SECURE', 'tls');          // SSL = 465, TLS = 587
+// simple env getter: prefer getenv(), fallback to $_ENV, then default
+$env = function(string $key, $default = null) {
+	$v = getenv($key);
+	if ($v === false || $v === null) {
+		if (array_key_exists($key, $_ENV)) return $_ENV[$key];
+		return $default;
+	}
+	return $v;
+};
 
-// Sender email & authentication
-define('SMTP_USERNAME', 'amzhuwao@gmail.com');
-define('SMTP_PASSWORD', 'cenfrqxkoyqpposc'); // Not your Gmail login password!
+define('SMTP_HOST', $env('SMTP_HOST', 'smtp.gmail.com'));
+define('SMTP_PORT', (int)$env('SMTP_PORT', 587));
+define('SMTP_SECURE', $env('SMTP_SECURE', 'tls')); // 'ssl', 'tls', or 'starttls'
 
-define('MAIL_FROM', 'amzhuwao@gmail.com'); // From address
-define('MAIL_FROM_NAME', 'Affiliates Admin'); // Display name
+// Credentials: leave empty by default to avoid committing secrets
+define('SMTP_USERNAME', $env('SMTP_USERNAME', ''));
+define('SMTP_PASSWORD', $env('SMTP_PASSWORD', ''));
+
+// From address/name: default to SMTP_USERNAME if not provided
+define('MAIL_FROM', $env('MAIL_FROM', $env('SMTP_USERNAME', 'no-reply@example.com')));
+define('MAIL_FROM_NAME', $env('MAIL_FROM_NAME', 'Affiliates Program'));

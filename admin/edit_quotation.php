@@ -1,5 +1,8 @@
 <?php
 // admin/edit_quotation.php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/functions.php';
@@ -8,28 +11,31 @@ requireAdmin();
 $id = $_GET['id'] ?? null;
 if (!$id) exit("Missing id");
 
+// --- FIXED SECTION: Prepare the main query ---
 $stmt = $db->prepare("SELECT q.*, a.full_name AS aff_name, a.affiliate_id AS aff_code, a.tax_clearance, a.id AS aff_db_id
                       FROM quotations q JOIN affiliates a ON q.affiliate_id = a.id WHERE q.id = :id LIMIT 1");
-
-// Reload affiliate for email
-$stmtAff2 = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
-$stmtAff2->execute([':id' => $q['affiliate_id']]);
-$affiliateInfo = $stmtAff2->fetch();
-
-// Send status update email
-sendQuotationStatusEmail($affiliateInfo, $q, $q['status'], $status);
-
+                      
+// -------------------------------------------------------------
+// *** CRITICAL FIX START: Execute and fetch $q before using it. ***
+// -------------------------------------------------------------
 $stmt->execute([':id' => $id]);
 $q = $stmt->fetch();
 if (!$q) exit("Quotation not found");
+// -------------------------------------------------------------
+// *** CRITICAL FIX END: $q is now defined for the rest of the script. ***
+// -------------------------------------------------------------
+
+// We don't need $stmtAff2 or sendQuotationStatusEmail here anymore
+// because the email should only be sent AFTER a successful update via POST.
 
 $errors = [];
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $old_status = $q['status']; // Store the current status for the email comparison
     $quoted_amount = $_POST['quoted_amount'] ?: null;
     $commission_rate = $_POST['commission_rate'] ?: null; // admin may override
-    $status = $_POST['status'] ?? $q['status'];
+    $status = $_POST['status'] ?? $old_status; // New status is set here
 
     // basic validation
     if ($status === 'converted' && (empty($quoted_amount) && $quoted_amount !== "0")) {
@@ -70,10 +76,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $success = "Quotation updated.";
-        // refresh q
-        $stmt = $db->prepare("SELECT q.*, a.full_name AS aff_name, a.affiliate_id AS aff_code FROM quotations q JOIN affiliates a ON q.affiliate_id = a.id WHERE q.id = :id LIMIT 1");
+        
+        // --- ADDED EMAIL LOGIC HERE (After successful update) ---
+        // 1. Refresh $q to get the latest database values for display/email
         $stmt->execute([':id' => $id]);
         $q = $stmt->fetch();
+        
+        // 2. Reload affiliate info for the email function
+        $stmtAff2 = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
+        $stmtAff2->execute([':id' => $q['affiliate_id']]);
+        $affiliateInfo = $stmtAff2->fetch();
+        
+        // 3. Send status update email, using $old_status and the $status that was just saved
+        if ($old_status !== $status) {
+            sendQuotationStatusEmail($affiliateInfo, $q, $old_status, $status);
+        }
+        // --------------------------------------------------------
+
     }
 }
 ?>
