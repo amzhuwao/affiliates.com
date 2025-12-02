@@ -102,6 +102,22 @@ if ($isAdmin) {
                         <span>Quotations</span>
                     </a>
 
+                    <a href="admin/commisions.php" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span>Commissions</span>
+                    </a>
+
+                    <a href="admin/commission_payout.php" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        <span>Commission Payouts</span>
+                    </a>
+
                     <a href="admin/export_csv.php" class="nav-item">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -109,14 +125,6 @@ if ($isAdmin) {
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                         <span>Export Data</span>
-                    </a>
-
-                    <a href="admin/test_email.php" class="nav-item">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        <span>Test Email</span>
                     </a>
                 </nav>
 
@@ -223,6 +231,28 @@ if ($isAdmin) {
                             <p class="action-desc">View, edit, or remove affiliates from the system</p>
                         </a>
 
+                        <a href="admin/commisions.php" class="action-card">
+                            <div class="action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <h3 class="action-title">View Commissions</h3>
+                            <p class="action-desc">Review all commission records and earnings</p>
+                        </a>
+
+                        <a href="admin/commission_payout.php" class="action-card">
+                            <div class="action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                            </div>
+                            <h3 class="action-title">Process Payouts</h3>
+                            <p class="action-desc">Manage and process affiliate commission payments</p>
+                        </a>
+
                         <a href="admin/export_csv.php" class="action-card">
                             <div class="action-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -233,17 +263,6 @@ if ($isAdmin) {
                             </div>
                             <h3 class="action-title">Export Data</h3>
                             <p class="action-desc">Download affiliate data in CSV format</p>
-                        </a>
-
-                        <a href="admin/test_email.php" class="action-card">
-                            <div class="action-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </div>
-                            <h3 class="action-title">Send Test Email</h3>
-                            <p class="action-desc">Test email notifications and templates</p>
                         </a>
                     </div>
                 </div>
