@@ -28,81 +28,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'Failed to send program change request. Please try again later.';
             }
         }
-    }
+    } else {
+        // Handle profile update form
+        $full_name = trim($_POST['full_name'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $phone_number = trim($_POST['phone_number'] ?? '');
+        $city = trim($_POST['city'] ?? '');
+        $password = $_POST['password'] ?? '';
 
-    $full_name = trim($_POST['full_name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $phone_number = trim($_POST['phone_number'] ?? '');
-    $city = trim($_POST['city'] ?? '');
-    $password = $_POST['password'] ?? '';
+        if ($full_name === '') $errors[] = 'Full name required.';
+        if ($phone_number === '') $errors[] = 'Phone number required.';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
 
-    if ($full_name === '') $errors[] = 'Full name required.';
-    if ($phone_number === '') $errors[] = 'Phone number required.';
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
+        // Optional password update
+        $passwordSql = '';
+        $params = [
+            ':full_name' => $full_name,
+            ':email' => $email,
+            ':phone_number' => $phone_number,
+            ':city' => $city,
+            ':id' => $_SESSION['user_id']
+        ];
+        if ($password !== '') {
+            $passwordSql = ", password = :password";
+            $params[':password'] = password_hash($password, PASSWORD_BCRYPT);
+        }
 
-    // Optional password update
-    $passwordSql = '';
-    $params = [
-        ':full_name' => $full_name,
-        ':email' => $email,
-        ':phone_number' => $phone_number,
-        ':city' => $city,
-        ':id' => $_SESSION['user_id']
-    ];
-    if ($password !== '') {
-        $passwordSql = ", password = :password";
-        $params[':password'] = password_hash($password, PASSWORD_BCRYPT);
-    }
+        // File upload
+        $uploadPath = $user['tax_clearance_proof'];
+        if (isset($_FILES['tax_clearance_proof']) && $_FILES['tax_clearance_proof']['error'] === UPLOAD_ERR_OK) {
+            $allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['tax_clearance_proof']['tmp_name']);
+            finfo_close($finfo);
 
-    // File upload
-    $uploadPath = $user['tax_clearance_proof'];
-    if (isset($_FILES['tax_clearance_proof']) && $_FILES['tax_clearance_proof']['error'] === UPLOAD_ERR_OK) {
-        $allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_file($finfo, $_FILES['tax_clearance_proof']['tmp_name']);
-        finfo_close($finfo);
-
-        if (!in_array($mime, $allowed)) {
-            $errors[] = 'Tax clearance proof must be PDF or JPG/PNG.';
-        } else {
-            $ext = pathinfo($_FILES['tax_clearance_proof']['name'], PATHINFO_EXTENSION);
-            $fname = uniqid('clear_') . '.' . $ext;
-            $destDir = __DIR__ . '/uploads/clearance_docs/';
-            if (!is_dir($destDir)) mkdir($destDir, 0755, true);
-            $dest = $destDir . $fname;
-
-            if (move_uploaded_file($_FILES['tax_clearance_proof']['tmp_name'], $dest)) {
-                $uploadPath = 'uploads/clearance_docs/' . $fname;
+            if (!in_array($mime, $allowed)) {
+                $errors[] = 'Tax clearance proof must be PDF or JPG/PNG.';
             } else {
-                $errors[] = 'Failed to save uploaded file.';
+                $ext = pathinfo($_FILES['tax_clearance_proof']['name'], PATHINFO_EXTENSION);
+                $fname = uniqid('clear_') . '.' . $ext;
+                $destDir = __DIR__ . '/uploads/clearance_docs/';
+                if (!is_dir($destDir)) mkdir($destDir, 0755, true);
+                $dest = $destDir . $fname;
+
+                if (move_uploaded_file($_FILES['tax_clearance_proof']['tmp_name'], $dest)) {
+                    $uploadPath = 'uploads/clearance_docs/' . $fname;
+                } else {
+                    $errors[] = 'Failed to save uploaded file.';
+                }
             }
         }
-    }
 
-    // Update profile
-    if (empty($errors)) {
-        $sql = "UPDATE affiliates SET 
-                full_name = :full_name,
-                email = :email,
-                phone_number = :phone_number,
-                city = :city,
-                tax_clearance_proof = :tax_clearance_proof
-                {$passwordSql}
-                WHERE id = :id";
-        $params[':tax_clearance_proof'] = $uploadPath;
+        // Update profile
+        if (empty($errors)) {
+            $sql = "UPDATE affiliates SET 
+                    full_name = :full_name,
+                    email = :email,
+                    phone_number = :phone_number,
+                    city = :city,
+                    tax_clearance_proof = :tax_clearance_proof
+                    {$passwordSql}
+                    WHERE id = :id";
+            $params[':tax_clearance_proof'] = $uploadPath;
 
-        $stmt = $db->prepare($sql);
-        $stmt->execute($params);
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
 
-        $success = 'Profile updated successfully!';
+            $success = 'Profile updated successfully!';
 
-        // Refresh session data
-        $_SESSION['full_name'] = $full_name;
+            // Refresh session data
+            $_SESSION['full_name'] = $full_name;
 
-        // Refresh user data
-        $stmt = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
-        $stmt->execute([':id' => $_SESSION['user_id']]);
-        $user = $stmt->fetch();
+            // Refresh user data
+            $stmt = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
+            $stmt->execute([':id' => $_SESSION['user_id']]);
+            $user = $stmt->fetch();
+        }
     }
 }
 ?>
