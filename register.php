@@ -46,7 +46,7 @@ if (isPost()) {
         } else {
             $ext = pathinfo($_FILES['tax_clearance_proof']['name'], PATHINFO_EXTENSION);
             $fname = uniqid('clear_') . '.' . $ext;
-            $destDir = __DIR__ . '/../uploads/clearance_docs/';
+            $destDir = __DIR__ . '/uploads/clearance_docs/';
             if (!is_dir($destDir)) mkdir($destDir, 0755, true);
             $dest = $destDir . $fname;
             if (!move_uploaded_file($_FILES['tax_clearance_proof']['tmp_name'], $dest)) {

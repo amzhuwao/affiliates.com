@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $ext = pathinfo($_FILES['tax_clearance_proof']['name'], PATHINFO_EXTENSION);
             $fname = uniqid('clear_') . '.' . $ext;
-            $destDir = __DIR__ . '/../uploads/clearance_docs/';
+            $destDir = __DIR__ . '/uploads/clearance_docs/';
             if (!is_dir($destDir)) mkdir($destDir, 0755, true);
             $dest = $destDir . $fname;
 
@@ -789,20 +789,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <div class="form-group">
                                 <label class="form-label">Program</label>
-                                <div style="display:flex;gap:10px;align-items:center;">
-                                    <input type="text" name="program" class="form-input"
-                                        value="<?= htmlspecialchars((($user['program'] ?? '') === 'TV') ? 'TechVouch' : 'GetSolar'); ?>"
-                                        placeholder="Your program" readonly>
-
-                                    <form method="post" style="margin:0;display:flex;gap:8px;align-items:center;">
-                                        <select name="new_program" class="form-input" style="min-width:140px;padding:8px;">
-                                            <option value="">Request change to...</option>
-                                            <option value="TV">TechVouch</option>
-                                            <option value="GS">GetSolar</option>
-                                        </select>
-                                        <button type="submit" name="request_program_change_submit" class="btn-primary" style="padding:10px 12px;font-size:13px;white-space:nowrap;">Request Change</button>
-                                    </form>
-                                </div>
+                                <input type="text" name="program" class="form-input"
+                                    value="<?= htmlspecialchars((($user['program'] ?? '') === 'TV') ? 'TechVouch' : 'GetSolar'); ?>"
+                                    placeholder="Your program" readonly>
+                                <p class="form-hint">To request a program change, use the "Program Change Request" section below</p>
                             </div>
 
                             <div class="form-group">
@@ -861,6 +851,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                 </svg>
                                 Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Program Change Request Card -->
+                <div class="profile-card">
+                    <div class="card-header-section">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <polyline points="17 11 19 13 23 9"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Program Change Request</h2>
+                            <p class="card-subtitle">Request to switch between TechVouch and GetSolar programs</p>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div class="form-group">
+                            <label class="form-label">Current Program</label>
+                            <input type="text" class="form-input"
+                                value="<?= htmlspecialchars((($user['program'] ?? '') === 'TV') ? 'TechVouch' : 'GetSolar'); ?>"
+                                readonly style="background: var(--bg-secondary); cursor: not-allowed;">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Request Change To
+                                <span class="required">*</span>
+                            </label>
+                            <select name="new_program" class="form-input" required>
+                                <option value="">Select new program...</option>
+                                <option value="TV">TechVouch</option>
+                                <option value="GS">GetSolar</option>
+                            </select>
+                            <p class="form-hint">An administrator will review and approve your program change request</p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" name="request_program_change_submit" class="btn-primary">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Submit Request
                             </button>
                         </div>
                     </form>
