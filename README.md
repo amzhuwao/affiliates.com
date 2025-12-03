@@ -258,7 +258,102 @@ Upcoming:
 
 ---
 
-## 📄 License
+Affiliate Management System - Future Enhancements Development Roadmap
+======================================================================
+
+Prepared for: Future Development & Branching
+Date: Automatically Generated
+
+------------------------------------------------------------
+1️⃣ Referral Tracking System
+------------------------------------------------------------
+- Create new table: referrals or customers
+- Track:
+  • Affiliate ID
+  • Customer details (optional)
+  • Referral timestamp
+  • Status (Pending / Confirmed / Paid)
+- Display on:
+  • Admin: full referrals list, filtering, payouts
+  • Affiliate: referral count, progress stats
+
+------------------------------------------------------------
+2️⃣ Activity Logging / Audit Trail
+------------------------------------------------------------
+Log key events:
+- Admin edits: who, what changed, when
+- Status changes: suspend/reactivate/delete
+- Login attempts: admin & affiliate
+Purpose:
+✔ Accountability
+✔ Fraud Mitigation
+✔ Incident Debugging
+
+------------------------------------------------------------
+3️⃣ Security Hardening
+------------------------------------------------------------
+Critical upgrades:
+- Add CSRF tokens on all forms
+- Convert sensitive GET actions to POST
+- Rate-limit login attempts
+- Secure password reset handling
+- Validate & sanitize all inputs
+
+------------------------------------------------------------
+4️⃣ Dashboard Enhancements
+------------------------------------------------------------
+Affiliate Dashboard:
+- Referral analytics
+- Click count tracking
+- Auto-copy share button
+- WhatsApp direct open
+
+Admin Dashboard:
+- Filtering: program, status, date range
+- Export referral analytics
+- KPI Overview (active affiliates, conversions, payouts)
+
+------------------------------------------------------------
+5️⃣ File Storage Improvements
+------------------------------------------------------------
+Current: /uploads/clearance_docs/
+
+Recommendations:
+- Validate file size (avoid server overload)
+- Rename uploaded files to include affiliate ID
+- Remove documents from public access:
+  • Instead: store outside web-root + secure access script
+
+------------------------------------------------------------
+6️⃣ UI & UX Improvements
+------------------------------------------------------------
+- Toast notifications for success/error instead of alerts
+- Mobile-first responsive layout tables
+- Icons per program: energy icon for GetSolar, tech icon for TechVouch
+- Badge color coding for programs
+
+------------------------------------------------------------
+Priority Table
+------------------------------------------------------------
+| Task Category            | Priority | Difficulty |
+|------------------------ |---------:|-----------:|
+| Referral Tracking       | ⭐⭐⭐⭐⭐    | Medium     |
+| Security Improvements   | ⭐⭐⭐⭐     | Medium     |
+| Activity Logging        | ⭐⭐⭐      | Low-Med    |
+| Dashboard Enhancements  | ⭐⭐⭐      | Medium     |
+| Storage Security        | ⭐⭐⭐      | Low        |
+| UI & UX Polish          | ⭐⭐       | Optional   |
+
+------------------------------------------------------------
+Notes
+------------------------------------------------------------
+Git Branch naming suggestions:
+- feature/referral-tracking
+- feature/admin-logs
+- feature/security-upgrade
+- feature/dashboard-analytics
+- fix/file-storage-permissions
+
 
 Restricted use license for assigned development stakeholders only.  
 Not permitted for external redistribution or resale without authorization.
