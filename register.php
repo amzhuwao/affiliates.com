@@ -21,6 +21,7 @@ if (isPost()) {
     $bank_name = trim($_POST['bank_name'] ?? '');
     $account_name = trim($_POST['account_name'] ?? '');
     $account_number = trim($_POST['account_number'] ?? '');
+    $program = trim($_POST['program'] ?? '');
 
     // Basic validation
     if ($full_name === '') $errors[] = 'Full name is required.';
@@ -36,7 +37,7 @@ if (isPost()) {
     // Handle file upload (tax clearance proof)
     $uploadPath = null;
     if (isset($_FILES['tax_clearance_proof']) && $_FILES['tax_clearance_proof']['error'] === UPLOAD_ERR_OK) {
-        $allowed = ['application/pdf','image/jpeg','image/png','image/jpg'];
+        $allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $_FILES['tax_clearance_proof']['tmp_name']);
         finfo_close($finfo);
@@ -58,17 +59,16 @@ if (isPost()) {
 
     if (empty($errors)) {
         $affiliateId = generateAffiliateId($db);
-        $refLink = buildReferralLink($affiliateId);
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
         $sql = "INSERT INTO affiliates
             (affiliate_id, full_name, phone_number, email, password, city, national_id, tax_clearance,
              authentication_code, tax_clearance_proof, payment_method, ecocash_number, bank_name,
-             account_name, account_number, referral_link)
+             account_name, account_number, program)
             VALUES
             (:affiliate_id, :full_name, :phone, :email, :password, :city, :national_id, :tax_clearance,
              :authentication_code, :tax_clearance_proof, :payment_method, :ecocash_number, :bank_name,
-             :account_name, :account_number, :referral_link)";
+             :account_name, :account_number, :program)";
         $stmt = $db->prepare($sql);
         $stmt->execute([
             ':affiliate_id' => $affiliateId,
@@ -86,7 +86,7 @@ if (isPost()) {
             ':bank_name' => $bank_name,
             ':account_name' => $account_name,
             ':account_number' => $account_number,
-            ':referral_link' => $refLink
+            ':program' => $program
         ]);
 
         $success = "Registered successfully. Your Affiliate ID: $affiliateId";
@@ -96,6 +96,7 @@ if (isPost()) {
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,6 +106,7 @@ if (isPost()) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/register.css">
 </head>
+
 <body>
     <div class="container">
         <div class="register-card">
@@ -155,31 +157,29 @@ if (isPost()) {
                     <div class="form-group">
                         <label for="full_name">Full Name</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="full_name" 
-                                name="full_name" 
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
                                 placeholder="Enter your full name"
                                 required
                                 autocomplete="name"
-                                value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="phone_number">Phone Number</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="tel" 
-                                id="phone_number" 
-                                name="phone_number" 
+                            <input
+                                type="tel"
+                                id="phone_number"
+                                name="phone_number"
                                 placeholder="e.g., +263771234567"
                                 required
                                 autocomplete="tel"
                                 pattern="^\+?[0-9]+"
-                                value="<?php echo htmlspecialchars($_POST['phone_number'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['phone_number'] ?? ''); ?>">
                             <div class="input-hint">This will be your unique identifier</div>
                         </div>
                     </div>
@@ -187,14 +187,13 @@ if (isPost()) {
                     <div class="form-group">
                         <label for="email">Email</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
                                 placeholder="your.email@example.com"
                                 autocomplete="email"
-                                value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                             <div class="input-hint">Optional - for account recovery</div>
                         </div>
                     </div>
@@ -203,28 +202,26 @@ if (isPost()) {
                         <div class="form-group">
                             <label for="password">Password</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="password" 
-                                    id="password" 
-                                    name="password" 
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
                                     placeholder="Create a password"
                                     required
-                                    autocomplete="new-password"
-                                >
+                                    autocomplete="new-password">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="password_confirm">Confirm Password</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="password" 
-                                    id="password_confirm" 
-                                    name="password_confirm" 
+                                <input
+                                    type="password"
+                                    id="password_confirm"
+                                    name="password_confirm"
                                     placeholder="Repeat password"
                                     required
-                                    autocomplete="new-password"
-                                >
+                                    autocomplete="new-password">
                             </div>
                         </div>
                     </div>
@@ -232,14 +229,24 @@ if (isPost()) {
                     <div class="form-group">
                         <label for="city">City/Town</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="city" 
-                                name="city" 
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
                                 placeholder="Enter your city or town"
                                 required
-                                value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['city'] ?? ''); ?>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="program">Program</label>
+                        <div class="input-wrapper">
+                            <select id="program" name="program" required class="select-input">
+                                <option value="GS" <?php echo (($_POST['program'] ?? 'GS') === 'GS') ? 'selected' : ''; ?>>GetSolar</option>
+                                <option value="TV" <?php echo (($_POST['program'] ?? '') === 'TV') ? 'selected' : ''; ?>>TechVouch</option>
+                            </select>
+                            <div class="input-hint">Choose the program you want to join</div>
                         </div>
                     </div>
 
@@ -254,14 +261,13 @@ if (isPost()) {
                     <div class="form-group">
                         <label for="national_id">National ID / Passport Number</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="national_id" 
-                                name="national_id" 
+                            <input
+                                type="text"
+                                id="national_id"
+                                name="national_id"
                                 placeholder="Enter your ID or passport number"
                                 required
-                                value="<?php echo htmlspecialchars($_POST['national_id'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['national_id'] ?? ''); ?>">
                             <div class="input-hint">Required for verification purposes</div>
                         </div>
                     </div>
@@ -270,13 +276,12 @@ if (isPost()) {
                         <label>Tax Clearance Status</label>
                         <div class="checkbox-wrapper">
                             <label class="checkbox-label">
-                                <input 
-                                    type="checkbox" 
-                                    id="tax_clearance" 
-                                    name="tax_clearance" 
+                                <input
+                                    type="checkbox"
+                                    id="tax_clearance"
+                                    name="tax_clearance"
                                     value="1"
-                                    <?php echo isset($_POST['tax_clearance']) ? 'checked' : ''; ?>
-                                >
+                                    <?php echo isset($_POST['tax_clearance']) ? 'checked' : ''; ?>>
                                 <span class="checkbox-custom"></span>
                                 <span class="checkbox-text">I have tax clearance</span>
                             </label>
@@ -286,13 +291,12 @@ if (isPost()) {
                     <div class="form-group" id="auth_code_group" style="display: none;">
                         <label for="authentication_code">Authentication Code</label>
                         <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="authentication_code" 
-                                name="authentication_code" 
+                            <input
+                                type="text"
+                                id="authentication_code"
+                                name="authentication_code"
                                 placeholder="Enter your ZIMRA clearance code"
-                                value="<?php echo htmlspecialchars($_POST['authentication_code'] ?? ''); ?>"
-                            >
+                                value="<?php echo htmlspecialchars($_POST['authentication_code'] ?? ''); ?>">
                             <div class="input-hint">Required only if you have tax clearance</div>
                         </div>
                     </div>
@@ -300,13 +304,12 @@ if (isPost()) {
                     <div class="form-group" id="proof_clearance_group" style="display: none;">
                         <label for="tax_clearance_proof">Proof of Clearance</label>
                         <div class="file-upload-wrapper">
-                            <input 
-                                type="file" 
-                                id="tax_clearance_proof" 
-                                name="tax_clearance_proof" 
+                            <input
+                                type="file"
+                                id="tax_clearance_proof"
+                                name="tax_clearance_proof"
                                 accept=".pdf,.jpg,.jpeg,.png"
-                                class="file-input"
-                            >
+                                class="file-input">
                             <label for="tax_clearance_proof" class="file-label">
                                 <span class="file-icon">📄</span>
                                 <span class="file-text">Choose file (PDF/JPEG)</span>
@@ -329,16 +332,15 @@ if (isPost()) {
                     <div class="form-group">
                         <label for="payment_method">Payment Method</label>
                         <div class="input-wrapper">
-                            <select 
-                                id="payment_method" 
-                                name="payment_method" 
+                            <select
+                                id="payment_method"
+                                name="payment_method"
                                 class="select-input"
-                                required
-                            >
+                                required>
                                 <option value="none" <?php echo (($_POST['payment_method'] ?? '') === 'none') ? 'selected' : ''; ?>>Select payment method</option>
                                 <option value="ecocash" <?php echo (($_POST['payment_method'] ?? '') === 'ecocash') ? 'selected' : ''; ?>>EcoCash</option>
                                 <option value="bank" <?php echo (($_POST['payment_method'] ?? '') === 'bank') ? 'selected' : ''; ?>>Bank Transfer</option>
-    </select>
+                            </select>
                         </div>
                     </div>
 
@@ -347,13 +349,12 @@ if (isPost()) {
                         <div class="form-group">
                             <label for="ecocash_number">EcoCash Number</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="tel" 
-                                    id="ecocash_number" 
-                                    name="ecocash_number" 
+                                <input
+                                    type="tel"
+                                    id="ecocash_number"
+                                    name="ecocash_number"
                                     placeholder="e.g., +263771234567"
-                                    value="<?php echo htmlspecialchars($_POST['ecocash_number'] ?? ''); ?>"
-                                >
+                                    value="<?php echo htmlspecialchars($_POST['ecocash_number'] ?? ''); ?>">
                             </div>
                         </div>
                     </div>
@@ -363,39 +364,36 @@ if (isPost()) {
                         <div class="form-group">
                             <label for="bank_name">Bank Name</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="text" 
-                                    id="bank_name" 
-                                    name="bank_name" 
+                                <input
+                                    type="text"
+                                    id="bank_name"
+                                    name="bank_name"
                                     placeholder="Enter your bank name"
-                                    value="<?php echo htmlspecialchars($_POST['bank_name'] ?? ''); ?>"
-                                >
+                                    value="<?php echo htmlspecialchars($_POST['bank_name'] ?? ''); ?>">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="account_name">Account Name</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="text" 
-                                    id="account_name" 
-                                    name="account_name" 
+                                <input
+                                    type="text"
+                                    id="account_name"
+                                    name="account_name"
                                     placeholder="Name on the account"
-                                    value="<?php echo htmlspecialchars($_POST['account_name'] ?? ''); ?>"
-                                >
+                                    value="<?php echo htmlspecialchars($_POST['account_name'] ?? ''); ?>">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="account_number">Account Number</label>
                             <div class="input-wrapper">
-                                <input 
-                                    type="text" 
-                                    id="account_number" 
-                                    name="account_number" 
+                                <input
+                                    type="text"
+                                    id="account_number"
+                                    name="account_number"
                                     placeholder="Your bank account number"
-                                    value="<?php echo htmlspecialchars($_POST['account_number'] ?? ''); ?>"
-                                >
+                                    value="<?php echo htmlspecialchars($_POST['account_number'] ?? ''); ?>">
                             </div>
                         </div>
                     </div>
@@ -404,11 +402,10 @@ if (isPost()) {
                         <label>Agreement</label>
                         <div class="checkbox-wrapper">
                             <label class="checkbox-label" id="terms_label">
-                                <input 
-                                    type="checkbox" 
-                                    id="terms_agreement" 
-                                    required
-                                >
+                                <input
+                                    type="checkbox"
+                                    id="terms_agreement"
+                                    required>
                                 <span class="checkbox-custom"></span>
                                 <span class="checkbox-text">I agree to the terms and conditions</span>
                             </label>
@@ -440,7 +437,7 @@ if (isPost()) {
             updatePaymentFields();
             updateAuthCodeField(); // Check initial state of tax clearance checkbox
             setupFileUpload();
-            
+
             // If form was submitted with tax clearance checked, show the fields
             const taxCheckbox = document.getElementById('tax_clearance');
             if (taxCheckbox && taxCheckbox.checked) {
@@ -456,15 +453,18 @@ if (isPost()) {
                     document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
                     document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
                     document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('completed');
-                    
+
                     currentStep++;
-                    
+
                     // Show next step
                     document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
                     document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
-                    
+
                     // Smooth scroll to top of form
-                    document.querySelector('.register-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelector('.register-card').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             }
         }
@@ -474,15 +474,18 @@ if (isPost()) {
                 // Hide current step
                 document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
                 document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
-                
+
                 currentStep--;
-                
+
                 // Show previous step
                 document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
                 document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('completed');
                 document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
-                
-                document.querySelector('.register-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                document.querySelector('.register-card').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         }
 
@@ -564,7 +567,7 @@ if (isPost()) {
             const authCodeGroup = document.getElementById('auth_code_group');
             const proofClearanceGroup = document.getElementById('proof_clearance_group');
             const authCodeInput = document.getElementById('authentication_code');
-            
+
             if (taxClearanceCheckbox.checked) {
                 // Show fields when tax clearance is checked
                 authCodeGroup.style.display = 'block';
@@ -619,24 +622,27 @@ if (isPost()) {
             const termsCheckbox = document.getElementById('terms_agreement');
             const termsError = document.getElementById('terms_error');
             const termsLabel = document.getElementById('terms_label');
-            
+
             // Check if we're on step 3 (where terms agreement is)
             if (currentStep === 3 && !termsCheckbox.checked) {
                 e.preventDefault();
-                
+
                 // Show error message
                 termsError.classList.add('show');
                 termsLabel.classList.add('error');
-                
+
                 // Add shake animation to checkbox
                 termsLabel.style.animation = 'none';
                 setTimeout(() => {
                     termsLabel.style.animation = 'shake 0.4s ease-in-out';
                 }, 10);
-                
+
                 // Scroll to the error
-                termsError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
+                termsError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
                 return false;
             }
         });
@@ -645,7 +651,7 @@ if (isPost()) {
         const termsCheckbox = document.getElementById('terms_agreement');
         const termsError = document.getElementById('terms_error');
         const termsLabel = document.getElementById('terms_label');
-        
+
         termsCheckbox.addEventListener('change', function() {
             if (this.checked) {
                 termsError.classList.remove('show');
@@ -654,4 +660,5 @@ if (isPost()) {
         });
     </script>
 </body>
+
 </html>

@@ -29,6 +29,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +39,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Mobile Header -->
@@ -67,7 +69,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                
+
                 <a href="quotations.php" class="nav-item active">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -110,7 +112,11 @@ $rejectedCount = $stmtRejected->fetchColumn();
                     </div>
                     <div class="user-details">
                         <p class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-                        <p class="user-role">Affiliate</p>
+                        <p class="user-role"><?php if ($user['program'] = "TV") {
+                                                    echo "TechVouch";
+                                                } else {
+                                                    echo "GetSolar";
+                                                }; ?></p>
                     </div>
                 </div>
                 <a href="logout.php" class="logout-btn">
@@ -190,60 +196,60 @@ $rejectedCount = $stmtRejected->fetchColumn();
             <!-- Quotations Table -->
             <div class="quick-actions">
                 <h2 class="section-title">All Quotations</h2>
-                
+
                 <?php if (count($rows) > 0): ?>
-                <div style="overflow-x: auto; margin: 0 -24px; padding: 0 24px;">
-                    <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden;">
-                        <thead>
-                            <tr style="background: var(--bg-secondary); border-bottom: 2px solid var(--border);">
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">#</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Customer</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Phone</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Estimate</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Quoted</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Status</th>
-                                <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($rows as $r): ?>
-                            <tr style="background: var(--bg-secondary); border-bottom: 1px solid var(--border); transition: all 0.3s ease;">
-                                <td data-label="#" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo htmlspecialchars($r['id']); ?></td>
-                                <td data-label="Customer" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo htmlspecialchars($r['customer_name']); ?></td>
-                                <td data-label="Phone" style="padding: 20px 16px; font-size: 14px; color: var(--text-secondary); font-weight: 500;"><?php echo htmlspecialchars($r['customer_phone']); ?></td>
-                                <td data-label="Estimate" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo $r['estimated_value'] ? '$' . number_format($r['estimated_value'], 2) : '-'; ?></td>
-                                <td data-label="Quoted" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 600;"><?php echo $r['quoted_amount'] ? '$' . number_format($r['quoted_amount'], 2) : '-'; ?></td>
-                                <td data-label="Status" style="padding: 20px 16px; font-size: 14px;">
-                                    <?php
-                                    $status = htmlspecialchars($r['status']);
-                                    $statusClass = '';
-                                    if ($status === 'pending') $statusClass = 'suspended';
-                                    elseif ($status === 'approved' || $status === 'converted') $statusClass = 'active';
-                                    elseif ($status === 'declined') $statusClass = 'deleted';
-                                    ?>
-                                    <span class="status-badge <?php echo $statusClass; ?>">
-                                        <?php echo ucfirst($status); ?>
-                                    </span>
-                                </td>
-                                <td data-label="Created" style="padding: 20px 16px; font-size: 13px; color: var(--text-secondary); font-weight: 500;"><?php echo date('M d, Y', strtotime($r['created_at'])); ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                    <div style="overflow-x: auto; margin: 0 -24px; padding: 0 24px;">
+                        <table style="width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden;">
+                            <thead>
+                                <tr style="background: var(--bg-secondary); border-bottom: 2px solid var(--border);">
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">#</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Customer</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Phone</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Estimate</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Quoted</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Status</th>
+                                    <th style="padding: 18px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($rows as $r): ?>
+                                    <tr style="background: var(--bg-secondary); border-bottom: 1px solid var(--border); transition: all 0.3s ease;">
+                                        <td data-label="#" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo htmlspecialchars($r['id']); ?></td>
+                                        <td data-label="Customer" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo htmlspecialchars($r['customer_name']); ?></td>
+                                        <td data-label="Phone" style="padding: 20px 16px; font-size: 14px; color: var(--text-secondary); font-weight: 500;"><?php echo htmlspecialchars($r['customer_phone']); ?></td>
+                                        <td data-label="Estimate" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 500;"><?php echo $r['estimated_value'] ? '$' . number_format($r['estimated_value'], 2) : '-'; ?></td>
+                                        <td data-label="Quoted" style="padding: 20px 16px; font-size: 14px; color: var(--text-primary); font-weight: 600;"><?php echo $r['quoted_amount'] ? '$' . number_format($r['quoted_amount'], 2) : '-'; ?></td>
+                                        <td data-label="Status" style="padding: 20px 16px; font-size: 14px;">
+                                            <?php
+                                            $status = htmlspecialchars($r['status']);
+                                            $statusClass = '';
+                                            if ($status === 'pending') $statusClass = 'suspended';
+                                            elseif ($status === 'approved' || $status === 'converted') $statusClass = 'active';
+                                            elseif ($status === 'declined') $statusClass = 'deleted';
+                                            ?>
+                                            <span class="status-badge <?php echo $statusClass; ?>">
+                                                <?php echo ucfirst($status); ?>
+                                            </span>
+                                        </td>
+                                        <td data-label="Created" style="padding: 20px 16px; font-size: 13px; color: var(--text-secondary); font-weight: 500;"><?php echo date('M d, Y', strtotime($r['created_at'])); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
-                <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-                    <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">📋</div>
-                    <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No quotations yet</p>
-                    <p style="font-size: 14px; margin-bottom: 24px;">Start by submitting your first quotation request</p>
-                    <a href="new_quotation.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--bg-primary); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-hover)'; this.style.boxShadow='0 8px 24px rgba(201, 203, 216, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent)'; this.style.boxShadow='0 4px 16px rgba(201, 203, 216, 0.15)';">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Create Quotation
-                    </a>
-                </div>
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                        <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">📋</div>
+                        <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No quotations yet</p>
+                        <p style="font-size: 14px; margin-bottom: 24px;">Start by submitting your first quotation request</p>
+                        <a href="new_quotation.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--bg-primary); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-hover)'; this.style.boxShadow='0 8px 24px rgba(201, 203, 216, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent)'; this.style.boxShadow='0 4px 16px rgba(201, 203, 216, 0.15)';">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Create Quotation
+                        </a>
+                    </div>
                 <?php endif; ?>
             </div>
         </main>
@@ -252,6 +258,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
     <style>
         /* Mobile responsive table styles */
         @media (max-width: 768px) {
+
             /* Hide table on overflow container */
             div[style*="overflow-x: auto"] {
                 overflow-x: visible !important;
@@ -375,7 +382,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
-            
+
             if (menuToggle && sidebar) {
                 menuToggle.addEventListener('click', function() {
                     sidebar.classList.toggle('active');
@@ -412,4 +419,5 @@ $rejectedCount = $stmtRejected->fetchColumn();
         });
     </script>
 </body>
+
 </html>

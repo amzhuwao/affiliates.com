@@ -2,6 +2,7 @@
 // public/dashboard.php
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/functions.php';
 
 requireLogin();
 
@@ -15,13 +16,13 @@ $isAdmin = ($_SESSION['role'] === 'admin');
 if ($isAdmin) {
     $totalStmt = $db->query("SELECT COUNT(*) as total FROM affiliates");
     $totalAffiliates = $totalStmt->fetchColumn();
-    
+
     $activeStmt = $db->query("SELECT COUNT(*) as total FROM affiliates WHERE status = 'active'");
     $activeAffiliates = $activeStmt->fetchColumn();
-    
+
     $suspendedStmt = $db->query("SELECT COUNT(*) as total FROM affiliates WHERE status = 'suspended'");
     $suspendedAffiliates = $suspendedStmt->fetchColumn();
-    
+
     $deletedStmt = $db->query("SELECT COUNT(*) as total FROM affiliates WHERE status = 'deleted'");
     $deletedAffiliates = $deletedStmt->fetchColumn();
 } else {
@@ -34,7 +35,7 @@ if ($isAdmin) {
         WHERE affiliate_id = :aid");
     $stmtCommissionTotals->execute([':aid' => $_SESSION['user_id']]);
     $commissionTotals = $stmtCommissionTotals->fetch();
-    
+
     // Count quotations
     $stmtQuotations = $db->prepare("SELECT COUNT(*) as total FROM quotations WHERE affiliate_id = :aid");
     $stmtQuotations->execute([':aid' => $_SESSION['user_id']]);
@@ -43,6 +44,7 @@ if ($isAdmin) {
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +54,7 @@ if ($isAdmin) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
     <?php if ($isAdmin): ?>
         <!-- Admin Dashboard Layout with Sidebar -->
@@ -83,7 +86,7 @@ if ($isAdmin) {
                         </svg>
                         <span>Dashboard</span>
                     </a>
-                    
+
                     <a href="admin/affiliates.php" class="nav-item">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -125,6 +128,15 @@ if ($isAdmin) {
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                         <span>Export Data</span>
+                    </a>
+
+                    <a href="admin/program_settings.php" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4"></path>
+                            <path d="M6 6v14h12V6"></path>
+                            <path d="M9 10h6"></path>
+                        </svg>
+                        <span>Program Settings</span>
                     </a>
                 </nav>
 
@@ -299,7 +311,7 @@ if ($isAdmin) {
                         </svg>
                         <span>Dashboard</span>
                     </a>
-                    
+
                     <a href="quotations.php" class="nav-item">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -326,14 +338,14 @@ if ($isAdmin) {
                         <span>My Commissions</span>
                     </a>
 
-                <a href="profile.php" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    <span>My Profile</span>
-                </a>
-            </nav>
+                    <a href="profile.php" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>My Profile</span>
+                    </a>
+                </nav>
 
                 <div class="sidebar-footer">
                     <div class="user-info">
@@ -342,7 +354,11 @@ if ($isAdmin) {
                         </div>
                         <div class="user-details">
                             <p class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-                            <p class="user-role">Affiliate</p>
+                            <p class="user-role"><?php if ($user['program'] === "TV") {
+                                                        echo "TechVouch";
+                                                    } else {
+                                                        echo "GetSolar";
+                                                    }; ?></p>
                         </div>
                     </div>
                     <a href="logout.php" class="logout-btn">
@@ -465,11 +481,11 @@ if ($isAdmin) {
                             </div>
                         </div>
                         <div class="referral-box">
-                            <input type="text" 
-                                   class="referral-input" 
-                                   value="<?php echo htmlspecialchars($user['referral_link']); ?>" 
-                                   readonly 
-                                   id="referralLink">
+                            <input type="text"
+                                class="referral-input"
+                                value="<?php echo htmlspecialchars(buildProgramWaLink($user['affiliate_id'], $user['program'])); ?>"
+                                readonly
+                                id="referralLink">
                             <button class="copy-btn" onclick="copyReferralLink()">
                                 <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -514,7 +530,7 @@ if ($isAdmin) {
             // Mobile menu toggle
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
-            
+
             if (menuToggle && sidebar) {
                 menuToggle.addEventListener('click', function() {
                     sidebar.classList.toggle('active');
@@ -540,12 +556,12 @@ if ($isAdmin) {
                 input.select();
                 input.setSelectionRange(0, 99999);
                 document.execCommand('copy');
-                
+
                 const btn = event.currentTarget;
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied!';
                 btn.classList.add('copied');
-                
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.classList.remove('copied');
@@ -554,4 +570,5 @@ if ($isAdmin) {
         }
     </script>
 </body>
+
 </html>

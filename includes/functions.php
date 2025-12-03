@@ -20,7 +20,8 @@ require_once __DIR__ . '/smtp_config.php';
 if (!defined('MAIL_FROM')) define('MAIL_FROM', 'amzhuwao@gmail.com'); // This should usually match your SMTP username
 if (!defined('MAIL_FROM_NAME')) define('MAIL_FROM_NAME', 'Affiliate Program');
 
-function generateAffiliateId($db) {
+function generateAffiliateId($db)
+{
     $stmt = $db->query("SELECT affiliate_id FROM affiliates ORDER BY id DESC LIMIT 1");
     $row = $stmt->fetch();
     if (!$row) return 'AFF' . str_pad(1, 3, '0', STR_PAD_LEFT);
@@ -32,13 +33,36 @@ function generateAffiliateId($db) {
     return 'AFF' . str_pad($num, 3, '0', STR_PAD_LEFT);
 }
 
-function buildReferralLink($affiliateId) {
+function buildReferralLink($affiliateId)
+{
     $company = COMPANY_WHATSAPP;
     $text = "I've been referred by Affiliate " . $affiliateId;
     return "https://wa.me/{$company}?text=" . urlencode($text);
 }
 
-function isPost() {
+// Get program WhatsApp number
+function getProgramWhatsApp($program)
+{
+    global $db;
+    $stmt = $db->prepare("SELECT whatsapp_number FROM program_settings WHERE program = :program LIMIT 1");
+    $stmt->execute([':program' => $program]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['whatsapp_number'] ?? null;
+}
+
+// Build WA referral link based on program
+function buildProgramWaLink($affiliate_id, $program)
+{
+    $wa = getProgramWhatsApp($program);
+    if (!$wa) return '#';
+
+    $message = urlencode("I've been referred by Affiliate " . $affiliate_id);
+    return "https://wa.me/{$wa}?text={$message}";
+}
+
+
+function isPost()
+{
     return $_SERVER['REQUEST_METHOD'] === 'POST';
 }
 
@@ -46,7 +70,8 @@ function isPost() {
  * Determine commission rate to use for a quotation.
  * If quotation has commission_rate (non-null) return it, otherwise use default.
  */
-function getCommissionRateForQuotation(array $quotation): float {
+function getCommissionRateForQuotation(array $quotation): float
+{
     if (!empty($quotation['commission_rate']) && is_numeric($quotation['commission_rate'])) {
         return (float)$quotation['commission_rate'];
     }
@@ -57,7 +82,8 @@ function getCommissionRateForQuotation(array $quotation): float {
  * Calculate commission details given deal amount and affiliate info.
  * Returns array: gross_commission, withholding_tax, net_commission, commission_rate
  */
-function calculateCommission(float $dealAmount, array $affiliate, ?float $overrideRate = null): array {
+function calculateCommission(float $dealAmount, array $affiliate, ?float $overrideRate = null): array
+{
     $rate = is_null($overrideRate) ? (float)DEFAULT_COMMISSION_RATE : (float)$overrideRate;
     // If affiliate has commission_rate in quoting, pass it instead of override
     $gross = round($dealAmount * ($rate / 100.0), 2);
@@ -81,7 +107,8 @@ function calculateCommission(float $dealAmount, array $affiliate, ?float $overri
  * Create commission record after a quotation is converted.
  * Will insert into commissions table.
  */
-function createCommissionRecord(PDO $db, int $quotationId, int $affiliateId, float $gross, float $withholding, float $net, float $rate) {
+function createCommissionRecord(PDO $db, int $quotationId, int $affiliateId, float $gross, float $withholding, float $net, float $rate)
+{
     $stmt = $db->prepare("INSERT INTO commissions
         (quotation_id, affiliate_id, gross_commission, withholding_tax, net_commission, commission_rate, created_at)
         VALUES (:qid, :aid, :gross, :with, :net, :rate, NOW())");
@@ -95,13 +122,16 @@ function createCommissionRecord(PDO $db, int $quotationId, int $affiliateId, flo
     ]);
     return $db->lastInsertId();
 }
-function getAffiliateById(PDO $db, int $affiliateId) {
+
+function getAffiliateById(PDO $db, int $affiliateId)
+{
     $stmt = $db->prepare("SELECT * FROM affiliates WHERE id = :id");
     $stmt->execute([':id' => $affiliateId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function sendQuotationStatusEmail(array $affiliate, array $quotation, string $oldStatus, string $newStatus, string $adminName = 'Admin'): bool {
+function sendQuotationStatusEmail(array $affiliate, array $quotation, string $oldStatus, string $newStatus, string $adminName = 'Admin'): bool
+{
     if (empty($affiliate['email'])) {
         return false;
     }
@@ -160,9 +190,10 @@ function sendQuotationStatusEmail(array $affiliate, array $quotation, string $ol
     }
 }
 
-function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin') {
+function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin')
+{
     if (empty($affiliate['email'])) return false; // no email to send to
-    
+
     $to = $affiliate['email'];
     $subject = "Account status changed: {$newStatus}";
     $time = date('Y-m-d H:i:s');
@@ -221,6 +252,74 @@ function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus,
         if (!$ok) {
             error_log("Fallback mail() failed for {$to}");
         }
+        return $ok;
+    }
+}
+
+/**
+ * Send a program change request email to the administrator.
+ * Returns true on success, false on failure.
+ */
+function sendProgramChangeRequest(array $affiliate, string $requestedProgramCode): bool
+{
+    $programLabel = ($requestedProgramCode === 'TV') ? 'TechVouch' : 'GetSolar';
+
+    $adminEmail = defined('MAIL_FROM') ? MAIL_FROM : null;
+    if (empty($adminEmail)) {
+        error_log('sendProgramChangeRequest: no admin email configured (MAIL_FROM)');
+        return false;
+    }
+
+    $subject = "Program change request: " . ($affiliate['affiliate_id'] ?? $affiliate['id'] ?? 'unknown');
+    $message = "Program change request\n\n";
+    $message .= "Affiliate: " . ($affiliate['full_name'] ?? '') . "\n";
+    $message .= "Affiliate ID: " . ($affiliate['affiliate_id'] ?? $affiliate['id'] ?? '') . "\n";
+    $message .= "Email: " . ($affiliate['email'] ?? '') . "\n";
+    $message .= "Phone: " . ($affiliate['phone_number'] ?? '') . "\n";
+    $message .= "Requested Program: " . $programLabel . " ({$requestedProgramCode})\n\n";
+    $message .= "Please review this request in the admin panel and update the affiliate's program as appropriate.\n";
+
+    $mail = new PHPMailer(true);
+    try {
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
+        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
+        $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
+        if (defined('SMTP_SECURE')) {
+            $secure = strtolower(SMTP_SECURE);
+            if ($secure === 'ssl') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            } elseif ($secure === 'tls' || $secure === 'starttls') {
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            }
+        }
+        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
+
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->addAddress($adminEmail);
+        // allow admin to reply directly to the affiliate
+        if (!empty($affiliate['email'])) {
+            $mail->addReplyTo($affiliate['email'], $affiliate['full_name'] ?? '');
+        }
+
+        $mail->isHTML(false);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log('Program change mail error: ' . $e->getMessage() . ' | PHPMailer: ' . $mail->ErrorInfo);
+        // fallback to PHP mail()
+        $headers = [];
+        $headers[] = 'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM . '>';
+        if (!empty($affiliate['email'])) $headers[] = 'Reply-To: ' . $affiliate['email'];
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/plain; charset=utf-8';
+        $ok = @mail($adminEmail, $subject, $message, implode("\r\n", $headers));
+        if (!$ok) error_log('sendProgramChangeRequest: fallback mail() failed');
         return $ok;
     }
 }

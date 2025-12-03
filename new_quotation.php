@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,15 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         * {
             box-sizing: border-box;
         }
-        
+
         body {
             overflow-x: hidden;
         }
-        
+
         .form-group {
             margin-bottom: 24px;
         }
-        
+
         .form-label {
             display: block;
             font-size: 14px;
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-bottom: 8px;
             letter-spacing: 0.2px;
         }
-        
+
         .form-input,
         .form-textarea {
             width: 100%;
@@ -91,18 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             outline: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .form-input::placeholder,
         .form-textarea::placeholder {
             color: var(--text-secondary);
             opacity: 0.5;
         }
-        
+
         .form-input:hover,
         .form-textarea:hover {
             border-color: var(--border-light);
         }
-        
+
         .form-input:focus,
         .form-textarea:focus {
             border-color: var(--accent);
@@ -110,20 +111,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
             transform: translateY(-1px);
         }
-        
+
         .form-textarea {
             resize: vertical;
             min-height: 120px;
             line-height: 1.6;
         }
-        
+
         .form-hint {
             font-size: 13px;
             color: var(--text-secondary);
             margin-top: 6px;
             font-weight: 500;
         }
-        
+
         .btn-submit {
             padding: 14px 32px;
             background: var(--accent);
@@ -142,23 +143,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             gap: 8px;
             font-family: inherit;
         }
-        
+
         .btn-submit:hover {
             transform: translateY(-2px);
             background: var(--accent-hover);
             box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
         }
-        
+
         .btn-submit:active {
             transform: translateY(0);
         }
-        
+
         .btn-submit:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
-        
+
         .form-actions {
             display: flex;
             gap: 12px;
@@ -167,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding-top: 24px;
             border-top: 1px solid var(--border);
         }
-        
+
         .btn-secondary {
             padding: 14px 24px;
             background: var(--bg-secondary);
@@ -182,14 +183,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-secondary:hover {
             background: var(--bg-primary);
             border-color: var(--accent);
             color: var(--accent);
             transform: translateY(-2px);
         }
-        
+
         .alert {
             padding: 16px 20px;
             border-radius: 12px;
@@ -201,30 +202,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             gap: 12px;
         }
-        
+
         @keyframes slideDown {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
+
         .alert-success {
             background: rgba(48, 209, 88, 0.08);
             border: 1px solid rgba(48, 209, 88, 0.25);
             color: var(--success);
         }
-        
+
         .alert-error {
             background: rgba(255, 69, 58, 0.08);
             border: 1px solid rgba(255, 69, 58, 0.25);
             color: var(--error);
         }
-        
+
         .form-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -232,25 +234,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 32px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
-        
+
         /* Responsive adjustments for small screens */
         @media (max-width: 480px) {
             .form-card {
                 padding: 20px 16px;
                 border-radius: 12px;
             }
-            
+
             .form-input,
             .form-textarea {
                 padding: 12px 14px;
-                font-size: 16px; /* Prevents iOS zoom on focus */
+                font-size: 16px;
+                /* Prevents iOS zoom on focus */
             }
-            
+
             .form-actions {
                 flex-direction: column;
                 gap: 12px;
             }
-            
+
             .btn-submit,
             .btn-secondary {
                 width: 100%;
@@ -259,6 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Mobile Header -->
@@ -288,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                
+
                 <a href="quotations.php" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -331,7 +335,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="user-details">
                         <p class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-                        <p class="user-role">Affiliate</p>
+                        <p class="user-role"><?php if ($user['program'] = "TV") {
+                                                    echo "TechVouch";
+                                                } else {
+                                                    echo "GetSolar";
+                                                }; ?></p>
                     </div>
                 </div>
                 <a href="logout.php" class="logout-btn">
@@ -356,24 +364,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Success/Error Messages -->
             <?php if ($success): ?>
-            <div class="alert alert-success">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; flex-shrink: 0;">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <span><?php echo htmlspecialchars($success); ?></span>
-            </div>
+                <div class="alert alert-success">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; flex-shrink: 0;">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span><?php echo htmlspecialchars($success); ?></span>
+                </div>
             <?php endif; ?>
 
             <?php foreach ($errors as $error): ?>
-            <div class="alert alert-error">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; flex-shrink: 0;">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
-                <span><?php echo htmlspecialchars($error); ?></span>
-            </div>
+                <div class="alert alert-error">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; flex-shrink: 0;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    <span><?php echo htmlspecialchars($error); ?></span>
+                </div>
             <?php endforeach; ?>
 
             <!-- Form Card -->
@@ -384,11 +392,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Customer Name
                             <span style="color: var(--error);">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="customer_name" 
-                            name="customer_name" 
-                            class="form-input" 
+                        <input
+                            type="text"
+                            id="customer_name"
+                            name="customer_name"
+                            class="form-input"
                             placeholder="Enter customer's full name"
                             value="<?php echo isset($customer_name) ? htmlspecialchars($customer_name) : ''; ?>"
                             required>
@@ -400,11 +408,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Customer Phone
                             <span style="color: var(--error);">*</span>
                         </label>
-                        <input 
-                            type="tel" 
-                            id="customer_phone" 
-                            name="customer_phone" 
-                            class="form-input" 
+                        <input
+                            type="tel"
+                            id="customer_phone"
+                            name="customer_phone"
+                            class="form-input"
                             placeholder="e.g., +63 912 345 6789"
                             value="<?php echo isset($customer_phone) ? htmlspecialchars($customer_phone) : ''; ?>"
                             required>
@@ -415,10 +423,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="form-label" for="description">
                             Description
                         </label>
-                        <textarea 
-                            id="description" 
-                            name="description" 
-                            class="form-textarea" 
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="form-textarea"
                             placeholder="Provide details about the quotation request..."><?php echo isset($description) ? htmlspecialchars($description) : ''; ?></textarea>
                         <p class="form-hint">Optional: Add any relevant details or special requirements</p>
                     </div>
@@ -427,11 +435,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="form-label" for="estimated_value">
                             Estimated Value ($)
                         </label>
-                        <input 
-                            type="number" 
-                            id="estimated_value" 
-                            name="estimated_value" 
-                            class="form-input" 
+                        <input
+                            type="number"
+                            id="estimated_value"
+                            name="estimated_value"
+                            class="form-input"
                             placeholder="0.00"
                             step="0.01"
                             min="0"
@@ -468,7 +476,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div>
                         <p style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;">What happens next?</p>
                         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px;">
-                            Once you submit this quotation, it will be reviewed by an admin. You'll be able to track its status in the 
+                            Once you submit this quotation, it will be reviewed by an admin. You'll be able to track its status in the
                             <a href="quotations.php" style="color: var(--accent); text-decoration: none; font-weight: 600;">My Quotations</a> page.
                         </p>
                         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
@@ -485,7 +493,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
-            
+
             if (menuToggle && sidebar) {
                 menuToggle.addEventListener('click', function() {
                     sidebar.classList.toggle('active');
@@ -506,7 +514,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Form validation feedback
             const form = document.getElementById('quotationForm');
             const inputs = form.querySelectorAll('.form-input, .form-textarea');
-            
+
             inputs.forEach(input => {
                 input.addEventListener('blur', function() {
                     if (this.hasAttribute('required') && !this.value.trim()) {
@@ -515,7 +523,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         this.style.borderColor = 'var(--border)';
                     }
                 });
-                
+
                 input.addEventListener('input', function() {
                     if (this.style.borderColor === 'var(--error)' || this.style.borderColor === 'rgb(255, 69, 58)') {
                         if (this.value.trim()) {
@@ -527,4 +535,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     </script>
 </body>
+
 </html>
