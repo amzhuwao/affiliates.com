@@ -177,7 +177,8 @@ $rows = $stmt->fetchAll();
                                             // Build WA link and JS-safe value
                                             $waLink = buildProgramWaLink($r['affiliate_id'], $r['program']);
                                             $waHref = htmlspecialchars($waLink, ENT_QUOTES, 'UTF-8');
-                                            $waJs = json_encode($waLink);
+                                            // Escape for use inside HTML attribute - json_encode adds quotes, htmlspecialchars escapes them
+                                            $waJs = htmlspecialchars(json_encode($waLink), ENT_QUOTES, 'UTF-8');
                                             // Create a short label like "wa.me/.../AFF001" for display
                                             $waHost = parse_url($waLink, PHP_URL_HOST) ?: 'wa.me';
                                             $waLabel = $waHost . '/.../' . $r['affiliate_id'];
@@ -379,11 +380,81 @@ $rows = $stmt->fetchAll();
         });
 
         function copyLink(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Referral link copied!");
-            }).catch(err => {
-                console.error("Failed to copy: ", err);
-            });
+            // Modern Clipboard API with fallback
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyToast('Referral link copied!');
+                }).catch(err => {
+                    console.error("Clipboard API failed: ", err);
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            // Fallback using textarea and execCommand
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopyToast('Referral link copied!');
+                } else {
+                    showCopyToast('Failed to copy link', true);
+                }
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+                showCopyToast('Failed to copy link', true);
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        function showCopyToast(message, isError = false) {
+            // Create or reuse toast element
+            let toast = document.getElementById('copyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copyToast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    z-index: 10000;
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                    opacity: 0;
+                    transform: translateY(10px);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                `;
+                document.body.appendChild(toast);
+            }
+            
+            toast.textContent = message;
+            toast.style.background = isError ? '#ff453a' : '#34c759';
+            toast.style.color = '#fff';
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            
+            // Clear any existing timeout
+            if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
+            
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+            }, 2000);
         }
     </script>
 
