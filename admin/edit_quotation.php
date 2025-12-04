@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id' => $id
         ]);
 
-        // if converted -> calculate commission and create commission record
+        // if converted -> calculate commission and create/update commission record
         if ($status === 'converted') {
             // reload affiliate info
             $stmtAff = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
@@ -72,8 +72,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id'   => $id
             ]);
 
-            // insert into commissions table
-            createCommissionRecord($db, $id, $q['affiliate_id'], $calc['gross_commission'], $calc['withholding_tax'], $calc['net_commission'], $calc['commission_rate']);
+            // Check if commission already exists for this quotation
+            $stmtCheckComm = $db->prepare("SELECT id FROM commissions WHERE quotation_id = :qid LIMIT 1");
+            $stmtCheckComm->execute([':qid' => $id]);
+            $existingComm = $stmtCheckComm->fetch();
+
+            if ($existingComm) {
+                // Update existing commission record
+                $stmtUpdateComm = $db->prepare("UPDATE commissions 
+                    SET gross_commission = :gross,
+                        withholding_tax = :with,
+                        net_commission = :net,
+                        commission_rate = :rate
+                    WHERE quotation_id = :qid");
+                $stmtUpdateComm->execute([
+                    ':gross' => $calc['gross_commission'],
+                    ':with' => $calc['withholding_tax'],
+                    ':net' => $calc['net_commission'],
+                    ':rate' => $calc['commission_rate'],
+                    ':qid' => $id
+                ]);
+            } else {
+                // Create new commission record
+                createCommissionRecord($db, $id, $q['affiliate_id'], $calc['gross_commission'], $calc['withholding_tax'], $calc['net_commission'], $calc['commission_rate']);
+            }
         }
 
         $success = "Quotation updated.";

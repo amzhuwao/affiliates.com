@@ -6,22 +6,29 @@ error_reporting(E_ALL);
 // public/new_quotation.php
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
-requireLogin();
+requireAdmin();
 
-// Fetch user info
+// Fetch user info (admin)
 $stmtUser = $db->prepare("SELECT * FROM affiliates WHERE id = :id LIMIT 1");
 $stmtUser->execute([':id' => $_SESSION['user_id']]);
 $user = $stmtUser->fetch();
+
+// Fetch all active affiliates for the dropdown
+$stmtAffiliates = $db->prepare("SELECT id, affiliate_id, full_name FROM affiliates WHERE role = 'affiliate' AND status = 'active' ORDER BY full_name ASC");
+$stmtAffiliates->execute();
+$affiliates = $stmtAffiliates->fetchAll();
 
 $errors = [];
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $affiliate_id = $_POST['affiliate_id'] ?? null;
     $customer_name = trim($_POST['customer_name'] ?? '');
     $customer_phone = trim($_POST['customer_phone'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $estimated_value = $_POST['estimated_value'] ?? null;
 
+    if (!$affiliate_id) $errors[] = 'Affiliate selection required.';
     if ($customer_name === '') $errors[] = 'Customer name required.';
     if ($customer_phone === '') $errors[] = 'Customer phone required.';
 
@@ -30,14 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             (affiliate_id, customer_name, customer_phone, description, estimated_value, status, created_at)
             VALUES (:aid, :cname, :cphone, :desc, :est, 'pending', NOW())");
         $stmt->execute([
-            ':aid' => $_SESSION['user_id'],
+            ':aid' => $affiliate_id,
             ':cname' => $customer_name,
             ':cphone' => $customer_phone,
             ':desc' => $description,
             ':est' => $estimated_value
         ]);
-        $success = "Quotation submitted successfully. Waiting for admin review.";
+        $success = "Quotation created successfully and assigned to affiliate.";
         // Clear form after successful submission
+        $affiliate_id = '';
         $customer_name = '';
         $customer_phone = '';
         $description = '';
@@ -51,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Quotation - Affiliates Portal</title>
+    <title>Create New Quotation - Admin Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -79,7 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .form-input,
-        .form-textarea {
+        .form-textarea,
+        .form-input select,
+        select.form-input {
             width: 100%;
             padding: 14px 18px;
             background: var(--bg-secondary);
@@ -272,14 +282,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span></span>
                 <span></span>
             </button>
-            <h1 class="mobile-title">New Quotation</h1>
+            <h1 class="mobile-title">Create Quotation</h1>
         </div>
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-logo">Affiliate Portal</h2>
-                <p class="sidebar-subtitle">Your Dashboard</p>
+                <h2 class="sidebar-logo">Admin Portal</h2>
+                <p class="sidebar-subtitle">Management Dashboard</p>
             </div>
 
             <nav class="sidebar-nav">
@@ -293,12 +303,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span>Dashboard</span>
                 </a>
 
-                <a href="quotations.php" class="nav-item">
+                <a href="admin/affiliates.php" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Affiliate Management</span>
+                </a>
+
+                <a href="admin/quotations.php" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         <path d="M9 12h6m-6 4h6"></path>
                     </svg>
-                    <span>My Quotations</span>
+                    <span>Quotations</span>
                 </a>
 
                 <a href="new_quotation.php" class="nav-item active">
@@ -311,20 +331,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span>New Quotation</span>
                 </a>
 
-                <a href="commisions.php" class="nav-item">
+                <a href="admin/commisions.php" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="1" x2="12" y2="23"></line>
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                     </svg>
-                    <span>My Commissions</span>
+                    <span>Commissions</span>
                 </a>
 
-                <a href="profile.php" class="nav-item">
+                <a href="admin/commission_payout.php" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
                     </svg>
-                    <span>My Profile</span>
+                    <span>Commission Payouts</span>
+                </a>
+
+                <a href="admin/export_csv.php" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Export Data</span>
                 </a>
             </nav>
 
@@ -335,11 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="user-details">
                         <p class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-                        <p class="user-role"><?php if ($user['program'] = "TV") {
-                                                    echo "TechVouch";
-                                                } else {
-                                                    echo "GetSolar";
-                                                }; ?></p>
+                        <p class="user-role">Administrator</p>
                     </div>
                 </div>
                 <a href="logout.php" class="logout-btn">
@@ -357,8 +382,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <main class="main-content">
             <div class="content-header">
                 <div class="header-text">
-                    <h1 class="page-title">Submit New Quotation</h1>
-                    <p class="page-subtitle">Create a quotation request for admin review</p>
+                    <h1 class="page-title">Create New Quotation</h1>
+                    <p class="page-subtitle">Create and assign a quotation to an affiliate</p>
                 </div>
             </div>
 
@@ -387,6 +412,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Form Card -->
             <div class="form-card">
                 <form method="post" id="quotationForm">
+                    <div class="form-group">
+                        <label class="form-label" for="affiliate_id">
+                            Select Affiliate
+                            <span style="color: var(--error);">*</span>
+                        </label>
+                        <select
+                            id="affiliate_id"
+                            name="affiliate_id"
+                            class="form-input"
+                            required>
+                            <option value="">-- Choose an affiliate --</option>
+                            <?php foreach ($affiliates as $aff): ?>
+                                <option value="<?php echo htmlspecialchars($aff['id']); ?>" <?php echo (isset($affiliate_id) && $affiliate_id == $aff['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($aff['affiliate_id'] . ' - ' . $aff['full_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="form-hint">Select the affiliate to assign this quotation to</p>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label" for="customer_name">
                             Customer Name
@@ -453,9 +498,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            Submit Quotation
+                            Create Quotation
                         </button>
-                        <a href="quotations.php" class="btn-secondary">
+                        <a href="admin/quotations.php" class="btn-secondary">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
                                 <path d="M19 12H5M12 19l-7-7 7-7"></path>
                             </svg>
@@ -476,11 +521,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div>
                         <p style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;">What happens next?</p>
                         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px;">
-                            Once you submit this quotation, it will be reviewed by an admin. You'll be able to track its status in the
-                            <a href="quotations.php" style="color: var(--accent); text-decoration: none; font-weight: 600;">My Quotations</a> page.
+                            Once you create this quotation, it will be assigned to the selected affiliate. The affiliate will see it in their quotations list.
                         </p>
                         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            When approved, you'll earn commission based on the quoted amount.
+                            You can manage and update the quotation status from the 
+                            <a href="admin/quotations.php" style="color: var(--accent); text-decoration: none; font-weight: 600;">Quotations Management</a> page.
                         </p>
                     </div>
                 </div>

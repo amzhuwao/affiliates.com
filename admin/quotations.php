@@ -39,6 +39,17 @@ $rows = $db->query("SELECT q.*, a.affiliate_id AS aff_code, a.full_name AS aff_n
             <p class="page-subtitle">View and manage all quotations from affiliates</p>
         </div>
 
+        <!-- Action Button -->
+        <div style="margin-bottom: 24px;">
+            <a href="../new_quotation.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--bg-primary); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Create New Quotation
+            </a>
+        </div>
+
         <!-- Quotations table -->
         <?php if (!empty($rows)): ?>
         <div style="overflow-x: auto; margin: 0 -24px; padding: 0 24px;">

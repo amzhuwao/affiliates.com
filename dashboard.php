@@ -105,6 +105,16 @@ if ($isAdmin) {
                         <span>Quotations</span>
                     </a>
 
+                    <a href="new_quotation.php" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <line x1="9" y1="15" x2="15" y2="15"></line>
+                        </svg>
+                        <span>New Quotation</span>
+                    </a>
+
                     <a href="admin/commisions.php" class="nav-item">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -243,6 +253,19 @@ if ($isAdmin) {
                             <p class="action-desc">View, edit, or remove affiliates from the system</p>
                         </a>
 
+                        <a href="new_quotation.php" class="action-card">
+                            <div class="action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3 class="action-title">Create Quotation</h3>
+                            <p class="action-desc">Create and assign a new quotation to an affiliate</p>
+                        </a>
+
                         <a href="admin/commisions.php" class="action-card">
                             <div class="action-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -320,16 +343,6 @@ if ($isAdmin) {
                         <span>My Quotations</span>
                     </a>
 
-                    <a href="new_quotation.php" class="nav-item">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="12" y1="18" x2="12" y2="12"></line>
-                            <line x1="9" y1="15" x2="15" y2="15"></line>
-                        </svg>
-                        <span>New Quotation</span>
-                    </a>
-
                     <a href="commisions.php" class="nav-item">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -392,7 +405,7 @@ if ($isAdmin) {
                         </div>
                         <div class="stat-content">
                             <p class="stat-label">Total Earned</p>
-                            <h3 class="stat-value" data-target="<?php echo number_format($commissionTotals['total_net'], 0); ?>"><?php echo number_format($commissionTotals['total_net'], 0); ?></h3>
+                            <h3 class="stat-value" data-target="<?php echo round($commissionTotals['total_net'], 2); ?>">$<?php echo number_format($commissionTotals['total_net'], 2); ?></h3>
                         </div>
                     </div>
 
@@ -405,7 +418,7 @@ if ($isAdmin) {
                         </div>
                         <div class="stat-content">
                             <p class="stat-label">Pending</p>
-                            <h3 class="stat-value" data-target="<?php echo number_format($commissionTotals['pending_net'], 0); ?>"><?php echo number_format($commissionTotals['pending_net'], 0); ?></h3>
+                            <h3 class="stat-value" data-target="<?php echo round($commissionTotals['pending_net'], 2); ?>">$<?php echo number_format($commissionTotals['pending_net'], 2); ?></h3>
                         </div>
                     </div>
 
@@ -418,7 +431,7 @@ if ($isAdmin) {
                         </div>
                         <div class="stat-content">
                             <p class="stat-label">Paid</p>
-                            <h3 class="stat-value" data-target="<?php echo number_format($commissionTotals['paid_net'], 0); ?>"><?php echo number_format($commissionTotals['paid_net'], 0); ?></h3>
+                            <h3 class="stat-value" data-target="<?php echo round($commissionTotals['paid_net'], 2); ?>">$<?php echo number_format($commissionTotals['paid_net'], 2); ?></h3>
                         </div>
                     </div>
                 </div>
@@ -427,17 +440,15 @@ if ($isAdmin) {
                 <div class="quick-actions">
                     <h2 class="section-title">Quick Actions</h2>
                     <div class="action-grid">
-                        <a href="new_quotation.php" class="action-card">
+                        <a href="quotations.php" class="action-card">
                             <div class="action-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="12" y1="18" x2="12" y2="12"></line>
-                                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    <path d="M9 12h6m-6 4h6"></path>
                                 </svg>
                             </div>
-                            <h3 class="action-title">Submit New Quotation</h3>
-                            <p class="action-desc">Create a new quotation request for review</p>
+                            <h3 class="action-title">View My Quotations</h3>
+                            <p class="action-desc">View quotations assigned to you</p>
                         </a>
 
                         <a href="commisions.php" class="action-card">
@@ -502,14 +513,20 @@ if ($isAdmin) {
     <?php endif; ?>
 
     <script>
-        // Counter animation for stats
-        function animateValue(element, start, end, duration) {
+        // Counter animation for stats with currency support
+        function animateValue(element, start, end, duration, isCurrency) {
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (end - start) + start);
-                element.textContent = value;
+                const value = progress * (end - start) + start;
+                
+                if (isCurrency) {
+                    element.textContent = '$' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                } else {
+                    element.textContent = Math.floor(value);
+                }
+                
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 }
@@ -521,9 +538,12 @@ if ($isAdmin) {
         document.addEventListener('DOMContentLoaded', function() {
             const statValues = document.querySelectorAll('.stat-value');
             statValues.forEach((stat, index) => {
-                const target = parseInt(stat.getAttribute('data-target'));
+                const target = parseFloat(stat.getAttribute('data-target'));
+                const initialText = stat.textContent;
+                const isCurrency = initialText.includes('$');
+                
                 setTimeout(() => {
-                    animateValue(stat, 0, target, 1200);
+                    animateValue(stat, 0, target, 1200, isCurrency);
                 }, index * 100);
             });
 

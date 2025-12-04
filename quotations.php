@@ -78,16 +78,6 @@ $rejectedCount = $stmtRejected->fetchColumn();
                     <span>My Quotations</span>
                 </a>
 
-                <a href="new_quotation.php" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="12" y1="18" x2="12" y2="12"></line>
-                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                    </svg>
-                    <span>New Quotation</span>
-                </a>
-
                 <a href="commisions.php" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -135,7 +125,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
             <div class="content-header">
                 <div class="header-text">
                     <h1 class="page-title">My Quotations</h1>
-                    <p class="page-subtitle">Track and manage your quotation requests</p>
+                    <p class="page-subtitle">View quotations assigned to you by administrators</p>
                 </div>
             </div>
 
@@ -180,17 +170,6 @@ $rejectedCount = $stmtRejected->fetchColumn();
                         <h3 class="stat-value"><?php echo $rejectedCount; ?></h3>
                     </div>
                 </div>
-            </div>
-
-            <!-- Quick Action Button -->
-            <div style="margin-bottom: 32px;">
-                <a href="new_quotation.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--bg-primary); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-hover)'; this.style.boxShadow='0 8px 24px rgba(201, 203, 216, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent)'; this.style.boxShadow='0 4px 16px rgba(201, 203, 216, 0.15)';">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Submit New Quotation
-                </a>
             </div>
 
             <!-- Quotations Table -->
@@ -241,14 +220,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
                     <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
                         <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">📋</div>
                         <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No quotations yet</p>
-                        <p style="font-size: 14px; margin-bottom: 24px;">Start by submitting your first quotation request</p>
-                        <a href="new_quotation.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--bg-primary); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--accent-hover)'; this.style.boxShadow='0 8px 24px rgba(201, 203, 216, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.background='var(--accent)'; this.style.boxShadow='0 4px 16px rgba(201, 203, 216, 0.15)';">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                            Create Quotation
-                        </a>
+                        <p style="font-size: 14px; margin-bottom: 0;">Quotations assigned to you by administrators will appear here</p>
                     </div>
                 <?php endif; ?>
             </div>
