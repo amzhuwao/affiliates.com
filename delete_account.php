@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-<!doctype html><html><head><meta charset="utf-8"><title>Delete Account</title></head><body>
+<!doctype html><html><head><meta charset="utf-8"><title>Delete Account</title><link rel="icon" type="image/png" href="branding/anako favicon.png"></head><body>
 <h2>Delete my account</h2>
 <p>This will mark your account as deleted. This is reversible by an admin.</p>
 <form method="post"><button type="submit" onclick="return confirm('Are you sure?')">Confirm Delete</button></form>

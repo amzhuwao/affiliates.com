@@ -114,10 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Affiliates Portal</title>
+    <link rel="icon" type="image/png" href="branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=2.0">
     <style>
         /* Profile Page Custom Styles */
         .btn-back {
@@ -175,14 +176,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .alert-success {
-            background: rgba(48, 209, 88, 0.1);
-            border-color: rgba(48, 209, 88, 0.3);
+            background: rgba(2, 167, 90, 0.1);
+            border-color: rgba(2, 167, 90, 0.25);
             color: var(--success);
         }
 
         .alert-error {
-            background: rgba(255, 69, 58, 0.1);
-            border-color: rgba(255, 69, 58, 0.3);
+            background: rgba(220, 53, 69, 0.1);
+            border-color: rgba(220, 53, 69, 0.25);
             color: var(--error);
         }
 
@@ -241,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            background: linear-gradient(135deg, rgba(201, 203, 216, 0.15) 0%, rgba(201, 203, 216, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(2, 167, 90, 0.15) 0%, rgba(2, 167, 90, 0.05) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -311,8 +312,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .form-input:focus {
             border-color: var(--accent);
-            background: var(--bg-primary);
-            box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 4px rgba(2, 167, 90, 0.1);
         }
 
         .form-input::placeholder {
@@ -340,7 +341,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: var(--accent);
             border: none;
             border-radius: 8px;
-            color: var(--bg-primary);
+            color: #ffffff;
             font-weight: 600;
             cursor: pointer;
             margin-right: 12px;
@@ -358,8 +359,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             gap: 8px;
             margin-top: 12px;
             padding: 12px 16px;
-            background: rgba(48, 209, 88, 0.1);
-            border: 1px solid rgba(48, 209, 88, 0.2);
+            background: rgba(2, 167, 90, 0.1);
+            border: 1px solid rgba(2, 167, 90, 0.25);
             border-radius: 8px;
             font-size: 13px;
             color: var(--success);
@@ -395,15 +396,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             font-size: 15px;
             font-weight: 600;
-            color: var(--bg-primary);
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(201, 203, 216, 0.2);
+            box-shadow: 0 4px 16px rgba(2, 167, 90, 0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(201, 203, 216, 0.3);
+            box-shadow: 0 8px 24px rgba(2, 167, 90, 0.3);
         }
 
         .btn-primary svg {
@@ -413,16 +414,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         /* Danger Zone Styles */
         .danger-card {
-            border-color: rgba(255, 69, 58, 0.2);
-            background: linear-gradient(135deg, rgba(255, 69, 58, 0.03) 0%, var(--bg-card) 100%);
+            border-color: rgba(220, 53, 69, 0.2);
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.03) 0%, var(--bg-card) 100%);
         }
 
         .danger-card:hover {
-            border-color: rgba(255, 69, 58, 0.3);
+            border-color: rgba(220, 53, 69, 0.3);
         }
 
         .danger-icon {
-            background: linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.15) 0%, rgba(220, 53, 69, 0.05) 100%);
         }
 
         .danger-icon svg {
@@ -459,8 +460,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             gap: 8px;
             padding: 12px 24px;
-            background: rgba(255, 69, 58, 0.1);
-            border: 1.5px solid rgba(255, 69, 58, 0.3);
+            background: rgba(220, 53, 69, 0.1);
+            border: 1.5px solid rgba(220, 53, 69, 0.3);
             border-radius: 10px;
             color: var(--error);
             text-decoration: none;
@@ -471,10 +472,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn-danger:hover {
-            background: rgba(255, 69, 58, 0.15);
-            border-color: rgba(255, 69, 58, 0.4);
+            background: rgba(220, 53, 69, 0.15);
+            border-color: rgba(220, 53, 69, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(255, 69, 58, 0.2);
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.2);
         }
 
         .btn-danger svg {
@@ -540,8 +541,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Sidebar Navigation -->
         <?php if ($isAdmin): ?>
             <aside class="sidebar" id="sidebar">
+                <div class="sidebar-brand">
+                    <img src="branding/ANAKO LOGO.png" alt="ANAKO" class="brand-logo">
+                </div>
                 <div class="sidebar-header">
-                    <h2 class="sidebar-logo">Admin Portal</h2>
+                    <h2 class="sidebar-title">Admin Portal</h2>
                     <p class="sidebar-subtitle">Management Dashboard</p>
                 </div>
 
@@ -632,8 +636,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </aside>
         <?php else: ?>
             <aside class="sidebar" id="sidebar">
+                <div class="sidebar-brand">
+                    <img src="branding/ANAKO LOGO.png" alt="ANAKO" class="brand-logo">
+                </div>
                 <div class="sidebar-header">
-                    <h2 class="sidebar-logo">Affiliate Portal</h2>
+                    <h2 class="sidebar-title">Affiliate Portal</h2>
                     <p class="sidebar-subtitle">Your Dashboard</p>
                 </div>
 
@@ -888,7 +895,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </label>
                             <select name="new_program" class="form-input" required>
                                 <option value="">Select new program...</option>
-                                <option value="TV">TechVouch</option>
                                 <option value="GS">GetSolar</option>
                             </select>
                             <p class="form-hint">An administrator will review and approve your program change request</p>

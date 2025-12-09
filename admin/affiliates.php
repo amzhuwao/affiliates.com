@@ -43,6 +43,7 @@ $rows = $stmt->fetchAll();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affiliate Management - Admin Portal</title>
+    <link rel="icon" type="image/png" href="../branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -54,20 +55,23 @@ $rows = $stmt->fetchAll();
 <body>
 
     <div class="affiliates-container">
-        <div class="affiliates-card">
-            <!-- Back navigation -->
+    <div class="affiliates-card">
+        <!-- Logo and Back navigation -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+            <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
             <a href="../dashboard.php" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 Back to Dashboard
             </a>
+        </div>
 
-            <!-- Page header -->
-            <div class="page-header">
-                <h1 class="page-title">Affiliate Management</h1>
-                <p class="page-subtitle">Manage and monitor all affiliate accounts</p>
-            </div>
+        <!-- Page header -->
+        <div class="page-header">
+            <h1 class="page-title">Affiliate Management</h1>
+            <p class="page-subtitle">Manage and monitor all affiliate accounts</p>
+        </div>
 
             <!-- Success/Error messages -->
             <?php if ($msg === 'updated'): ?>

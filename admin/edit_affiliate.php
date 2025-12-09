@@ -137,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Affiliate - <?= htmlspecialchars($user['affiliate_id']) ?></title>
+    <link rel="icon" type="image/png" href="../branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -146,7 +147,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
     <div class="edit-container">
-        <a href="affiliates.php" class="back-link">Back to Affiliates</a>
+        <!-- Logo and Back Link -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+            <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
+            <a href="affiliates.php" class="back-link">Back to Affiliates</a>
+        </div>
 
         <div class="edit-card">
             <div class="card-header">

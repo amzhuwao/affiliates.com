@@ -60,10 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Quotation - Admin Portal</title>
+    <link rel="icon" type="image/png" href="branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=2.0">
     <style>
         * {
             box-sizing: border-box;
@@ -118,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-textarea:focus {
             border-color: var(--accent);
             background: var(--bg-card);
-            box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+            box-shadow: 0 0 0 4px rgba(2, 167, 90, 0.1);
             transform: translateY(-1px);
         }
 
@@ -142,12 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 12px;
             font-size: 15px;
             font-weight: 600;
-            color: var(--bg-primary);
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);
+            box-shadow: 0 4px 16px rgba(2, 167, 90, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -157,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-submit:hover {
             transform: translateY(-2px);
             background: var(--accent-hover);
-            box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
+            box-shadow: 0 8px 24px rgba(2, 167, 90, 0.3);
         }
 
         .btn-submit:active {
@@ -195,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn-secondary:hover {
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
             border-color: var(--accent);
             color: var(--accent);
             transform: translateY(-2px);
@@ -226,14 +227,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .alert-success {
-            background: rgba(48, 209, 88, 0.08);
-            border: 1px solid rgba(48, 209, 88, 0.25);
+            background: rgba(2, 167, 90, 0.1);
+            border: 1px solid rgba(2, 167, 90, 0.25);
             color: var(--success);
         }
 
         .alert-error {
-            background: rgba(255, 69, 58, 0.08);
-            border: 1px solid rgba(255, 69, 58, 0.25);
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.25);
             color: var(--error);
         }
 
@@ -242,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 32px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         /* Responsive adjustments for small screens */
@@ -287,8 +288,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="branding/ANAKO LOGO.png" alt="ANAKO" class="brand-logo">
+            </div>
             <div class="sidebar-header">
-                <h2 class="sidebar-logo">Admin Portal</h2>
+                <h2 class="sidebar-title">Admin Portal</h2>
                 <p class="sidebar-subtitle">Management Dashboard</p>
             </div>
 
@@ -511,9 +515,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Info Box -->
-            <div style="margin-top: 32px; padding: 20px 24px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; border-left: 3px solid var(--info);">
+            <div style="margin-top: 32px; padding: 20px 24px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; border-left: 3px solid var(--accent);">
                 <div style="display: flex; gap: 16px; align-items: start;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--info); flex-shrink: 0; margin-top: 2px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--accent); flex-shrink: 0; margin-top: 2px;">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="16" x2="12" y2="12"></line>
                         <line x1="12" y1="8" x2="12.01" y2="8"></line>

@@ -34,10 +34,11 @@ $rejectedCount = $stmtRejected->fetchColumn();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Quotations - Affiliates Portal</title>
+    <link rel="icon" type="image/png" href="branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=2.0">
 </head>
 
 <body>
@@ -54,8 +55,11 @@ $rejectedCount = $stmtRejected->fetchColumn();
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="branding/ANAKO LOGO.png" alt="ANAKO" class="brand-logo">
+            </div>
             <div class="sidebar-header">
-                <h2 class="sidebar-logo">Affiliate Portal</h2>
+                <h2 class="sidebar-title">Affiliate Portal</h2>
                 <p class="sidebar-subtitle">Your Dashboard</p>
             </div>
 
@@ -218,8 +222,8 @@ $rejectedCount = $stmtRejected->fetchColumn();
                     </div>
                 <?php else: ?>
                     <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-                        <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">📋</div>
-                        <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No quotations yet</p>
+                        <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.25;">📋</div>
+                        <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">No quotations yet</p>
                         <p style="font-size: 14px; margin-bottom: 0;">Quotations assigned to you by administrators will appear here</p>
                     </div>
                 <?php endif; ?>
@@ -261,7 +265,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
                 background: var(--bg-secondary) !important;
                 position: relative;
                 overflow: hidden;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             }
 
             /* Add top accent bar to each card */
@@ -278,7 +282,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
             /* Remove hover effects on mobile */
             table tbody tr:hover {
                 transform: none !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
             }
 
             /* Style first cell (ID) as card header */
@@ -378,7 +382,7 @@ $rejectedCount = $stmtRejected->fetchColumn();
                 row.addEventListener('mouseenter', function() {
                     this.style.background = 'var(--bg-card)';
                     this.style.transform = 'scale(1.01)';
-                    this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+                    this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
                     this.style.zIndex = '1';
                 });
                 row.addEventListener('mouseleave', function() {

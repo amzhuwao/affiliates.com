@@ -7,22 +7,22 @@
 }
 
 :root {
-    --bg-primary: #0d0d0f;
-    --bg-secondary: #16171a;
-    --bg-card: #1c1d21;
-    --accent: #c9cbd8;
-    --accent-dark: #a8aab5;
-    --accent-hover: #e0e1e8;
-    --text-primary: #f5f5f7;
-    --text-secondary: #8e8e93;
-    --border: #2c2c2e;
-    --border-light: #3a3a3c;
-    --error: #ff453a;
-    --success: #30d158;
-    --warning: #ff9f0a;
-    --info: #0a84ff;
-    --shadow-sm: rgba(0, 0, 0, 0.3);
-    --shadow-lg: rgba(0, 0, 0, 0.6);
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-card: #ffffff;
+    --accent: #02a75a;
+    --accent-dark: #018a4a;
+    --accent-hover: #03c468;
+    --text-primary: #212529;
+    --text-secondary: #848787;
+    --border: #dee2e6;
+    --border-light: #ced4da;
+    --error: #dc3545;
+    --success: #02a75a;
+    --warning: #ffc107;
+    --info: #0dcaf0;
+    --shadow-sm: rgba(0, 0, 0, 0.075);
+    --shadow-lg: rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -49,7 +49,7 @@ body::before {
     right: -15%;
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(201, 203, 216, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(2, 167, 90, 0.03) 0%, transparent 70%);
     border-radius: 50%;
     animation: float 25s ease-in-out infinite;
     pointer-events: none;
@@ -63,7 +63,7 @@ body::after {
     left: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(201, 203, 216, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(2, 167, 90, 0.02) 0%, transparent 70%);
     border-radius: 50%;
     animation: float 20s ease-in-out infinite reverse;
     pointer-events: none;
@@ -105,7 +105,7 @@ body::after {
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 20px 60px var(--shadow-lg), 0 0 1px rgba(201, 203, 216, 0.1);
+    box-shadow: 0 20px 60px var(--shadow-lg), 0 0 1px rgba(2, 167, 90, 0.1);
     backdrop-filter: blur(20px);
     animation: slideUp 0.6s ease-out;
     position: relative;
@@ -175,7 +175,7 @@ body::after {
     color: var(--accent);
     margin-bottom: 8px;
     letter-spacing: -0.8px;
-    text-shadow: 0 0 30px rgba(201, 203, 216, 0.15);
+    text-shadow: none;
 }
 
 .page-subtitle {
@@ -218,7 +218,7 @@ body::after {
 
 .tab:hover {
     color: var(--text-primary);
-    background: rgba(201, 203, 216, 0.05);
+    background: rgba(2, 167, 90, 0.05);
 }
 
 .tab:hover svg {
@@ -228,7 +228,7 @@ body::after {
 .tab.active {
     color: var(--accent);
     border-bottom-color: var(--accent);
-    background: rgba(201, 203, 216, 0.08);
+    background: rgba(2, 167, 90, 0.08);
 }
 
 .tab.active svg {
@@ -260,8 +260,8 @@ body::after {
 }
 
 .message.success {
-    background: rgba(48, 209, 88, 0.08);
-    border: 1px solid rgba(48, 209, 88, 0.25);
+    background: rgba(2, 167, 90, 0.1);
+    border: 1px solid rgba(2, 167, 90, 0.25);
     color: var(--success);
 }
 
@@ -418,8 +418,8 @@ body::after {
 .payment-badge {
     display: inline-block;
     padding: 6px 12px;
-    background: linear-gradient(135deg, rgba(201, 203, 216, 0.12) 0%, rgba(201, 203, 216, 0.05) 100%);
-    border: 1px solid rgba(201, 203, 216, 0.2);
+    background: linear-gradient(135deg, rgba(2, 167, 90, 0.12) 0%, rgba(2, 167, 90, 0.05) 100%);
+    border: 1px solid rgba(2, 167, 90, 0.2);
     border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
@@ -457,7 +457,7 @@ button.action-link {
     border-color: var(--accent);
     color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(201, 203, 216, 0.15);
+    box-shadow: 0 4px 12px rgba(2, 167, 90, 0.2);
 }
 
 /* Modal Base Styles */
@@ -537,8 +537,8 @@ button.action-link {
 }
 
 .modal-icon.warning {
-    background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 159, 10, 0.05) 100%);
-    border: 2px solid rgba(255, 159, 10, 0.3);
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%);
+    border: 2px solid rgba(255, 193, 7, 0.3);
 }
 
 .modal-icon svg {
@@ -703,7 +703,7 @@ button.action-link {
 .payment-form textarea:focus {
     border-color: var(--accent);
     background: var(--bg-card);
-    box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+    box-shadow: 0 0 0 4px rgba(2, 167, 90, 0.1);
     transform: translateY(-1px);
 }
 
@@ -771,14 +771,14 @@ button.action-link {
 
 .modal-btn-confirm {
     background: var(--accent);
-    color: var(--bg-primary);
-    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(2, 167, 90, 0.2);
 }
 
 .modal-btn-confirm:hover {
     transform: translateY(-2px);
     background: var(--accent-hover);
-    box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
+    box-shadow: 0 8px 24px rgba(2, 167, 90, 0.3);
 }
 
 .modal-btn:active {

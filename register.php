@@ -101,6 +101,7 @@ if (isPost()) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Affiliates Portal</title>
+    <link rel="icon" type="image/png" href="branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -112,6 +113,7 @@ if (isPost()) {
         <div class="register-card">
             <!-- Header section with title and subtitle -->
             <div class="logo">
+                <img src="branding/ANAKO LOGO.png" alt="ANAKO Logo" class="logo-img">
                 <h1>Join Our Network</h1>
                 <p>Create your affiliate account in just a few steps</p>
             </div>
@@ -243,8 +245,7 @@ if (isPost()) {
                         <label for="program">Program</label>
                         <div class="input-wrapper">
                             <select id="program" name="program" required class="select-input">
-                                <option value="GS" <?php echo (($_POST['program'] ?? 'GS') === 'GS') ? 'selected' : ''; ?>>GetSolar</option>
-                                <option value="TV" <?php echo (($_POST['program'] ?? '') === 'TV') ? 'selected' : ''; ?>>TechVouch</option>
+                                <option value="GS" selected>GetSolar</option>
                             </select>
                             <div class="input-hint">Choose the program you want to join</div>
                         </div>
