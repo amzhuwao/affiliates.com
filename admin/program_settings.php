@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Settings - Admin</title>
+    <link rel="icon" type="image/png" href="../branding/anako favicon.png">
     <link rel="stylesheet" href="../css/affiliates.css">
     <style>
         .settings-card {
@@ -106,7 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="affiliates-container">
         <div class="settings-card">
-            <a href="../dashboard.php" class="back-link">&larr; Back</a>
+            <!-- Logo and Back Link -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+                <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
+                <a href="../dashboard.php" class="back-link">&larr; Back</a>
+            </div>
             <h2 style="margin-top:8px;">Program Settings</h2>
             <p style="color:var(--text-secondary);">Update WhatsApp numbers used for program referral links.</p>
 

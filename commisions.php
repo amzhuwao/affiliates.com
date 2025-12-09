@@ -35,10 +35,11 @@ $list = $stmt->fetchAll();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Commissions - Affiliates Portal</title>
+    <link rel="icon" type="image/png" href="branding/anako favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=2.0">
 </head>
 
 <body>
@@ -55,8 +56,11 @@ $list = $stmt->fetchAll();
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="branding/ANAKO LOGO.png" alt="ANAKO" class="brand-logo">
+            </div>
             <div class="sidebar-header">
-                <h2 class="sidebar-logo">Affiliate Portal</h2>
+                <h2 class="sidebar-title">Affiliate Portal</h2>
                 <p class="sidebar-subtitle">Your Dashboard</p>
             </div>
 
@@ -219,17 +223,17 @@ $list = $stmt->fetchAll();
                     </div>
                 <?php else: ?>
                     <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-                        <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">💰</div>
-                        <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No commissions yet</p>
+                        <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.25;">💰</div>
+                        <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">No commissions yet</p>
                         <p style="font-size: 14px; margin-bottom: 0;">Commissions will appear here when quotations are converted to sales</p>
                     </div>
                 <?php endif; ?>
             </div>
 
             <!-- Info Box -->
-            <div style="margin-top: 32px; padding: 20px 24px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; border-left: 3px solid var(--info);">
+            <div style="margin-top: 32px; padding: 20px 24px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; border-left: 3px solid var(--accent);">
                 <div style="display: flex; gap: 16px; align-items: start;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--info); flex-shrink: 0; margin-top: 2px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--accent); flex-shrink: 0; margin-top: 2px;">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="16" x2="12" y2="12"></line>
                         <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -279,7 +283,7 @@ $list = $stmt->fetchAll();
                 row.addEventListener('mouseenter', function() {
                     this.style.background = 'var(--bg-card)';
                     this.style.transform = 'scale(1.01)';
-                    this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+                    this.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
                     this.style.zIndex = '1';
                 });
                 row.addEventListener('mouseleave', function() {

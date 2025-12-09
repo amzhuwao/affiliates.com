@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Quotation #<?=htmlspecialchars($q['id'])?> - Admin Panel</title>
+    <link rel="icon" type="image/png" href="../branding/anako favicon.png">
     <link rel="stylesheet" href="../css/edit_quotation.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -132,8 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="edit-container">
-        <!-- Back Link -->
-        <a href="quotations.php" class="back-link">Back to Quotations</a>
+        <!-- Logo and Back Link -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+            <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
+            <a href="quotations.php" class="back-link">Back to Quotations</a>
+        </div>
 
         <!-- Main Card -->
         <div class="edit-card">

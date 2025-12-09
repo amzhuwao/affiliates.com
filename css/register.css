@@ -7,20 +7,20 @@
 
 /* Design system variables for consistent theming */
 :root {
-	--bg-primary: #0d0d0f;
-	--bg-secondary: #16171a;
-	--bg-card: #1c1d21;
-	--accent: #c9cbd8;
-	--accent-dark: #a8aab5;
-	--accent-hover: #e0e1e8;
-	--text-primary: #f5f5f7;
-	--text-secondary: #8e8e93;
-	--border: #2c2c2e;
-	--border-light: #3a3a3c;
-	--error: #ff453a;
-	--success: #30d158;
-	--shadow-sm: rgba(0, 0, 0, 0.3);
-	--shadow-lg: rgba(0, 0, 0, 0.6);
+	--bg-primary: #ffffff;
+	--bg-secondary: #f8f9fa;
+	--bg-card: #ffffff;
+	--accent: #02a75a;
+	--accent-dark: #018a4a;
+	--accent-hover: #03c468;
+	--text-primary: #212529;
+	--text-secondary: #848787;
+	--border: #dee2e6;
+	--border-light: #ced4da;
+	--error: #dc3545;
+	--success: #02a75a;
+	--shadow-sm: rgba(0, 0, 0, 0.075);
+	--shadow-lg: rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -56,7 +56,7 @@ body::before {
 	height: 600px;
 	background: radial-gradient(
 		circle,
-		rgba(201, 203, 216, 0.06) 0%,
+		rgba(2, 167, 90, 0.04) 0%,
 		transparent 70%
 	);
 	border-radius: 50%;
@@ -72,7 +72,7 @@ body::after {
 	height: 500px;
 	background: radial-gradient(
 		circle,
-		rgba(201, 203, 216, 0.04) 0%,
+		rgba(2, 167, 90, 0.03) 0%,
 		transparent 70%
 	);
 	border-radius: 50%;
@@ -103,7 +103,7 @@ body::after {
 	border: 1px solid var(--border);
 	border-radius: 20px;
 	padding: 48px 40px;
-	box-shadow: 0 20px 60px var(--shadow-lg), 0 0 1px rgba(201, 203, 216, 0.1);
+	box-shadow: 0 20px 60px var(--shadow-lg), 0 0 1px rgba(2, 167, 90, 0.1);
 	backdrop-filter: blur(20px);
 	animation: slideUp 0.6s ease-out;
 	position: relative;
@@ -141,13 +141,20 @@ body::after {
 	margin-bottom: 32px;
 }
 
+.logo-img {
+	width: 150px;
+	height: auto;
+	margin: 0 auto 20px;
+	display: block;
+}
+
 .logo h1 {
 	font-size: 28px;
 	font-weight: 700;
 	color: var(--accent);
 	margin-bottom: 8px;
 	letter-spacing: -0.5px;
-	text-shadow: 0 0 30px rgba(201, 203, 216, 0.15);
+	text-shadow: none;
 }
 
 .logo p {
@@ -197,8 +204,8 @@ body::after {
 .progress-step.active .progress-circle {
 	background: var(--accent);
 	border-color: var(--accent);
-	color: var(--bg-primary);
-	box-shadow: 0 0 20px rgba(201, 203, 216, 0.4);
+	color: #ffffff;
+	box-shadow: 0 0 20px rgba(2, 167, 90, 0.4);
 	transform: scale(1.1);
 }
 
@@ -206,7 +213,7 @@ body::after {
 	background: var(--success);
 	border-color: var(--success);
 	color: transparent;
-	box-shadow: 0 0 20px rgba(48, 209, 88, 0.3);
+	box-shadow: 0 0 20px rgba(2, 167, 90, 0.3);
 }
 
 .progress-step.completed .progress-circle::after {
@@ -217,7 +224,7 @@ body::after {
 	transform: translate(-50%, -50%) rotate(45deg);
 	width: 8px;
 	height: 16px;
-	border: solid #0d0d0f;
+	border: solid #ffffff;
 	border-width: 0 3px 3px 0;
 	animation: checkmark 0.4s ease-out;
 }
@@ -264,8 +271,8 @@ body::after {
 
 /* Notification messages */
 .error-message {
-	background: rgba(255, 69, 58, 0.08);
-	border: 1px solid rgba(255, 69, 58, 0.25);
+	background: rgba(220, 53, 69, 0.1);
+	border: 1px solid rgba(220, 53, 69, 0.25);
 	border-radius: 12px;
 	padding: 14px 18px;
 	margin-bottom: 24px;
@@ -276,8 +283,8 @@ body::after {
 }
 
 .success-message {
-	background: rgba(48, 209, 88, 0.08);
-	border: 1px solid rgba(48, 209, 88, 0.25);
+	background: rgba(2, 167, 90, 0.1);
+	border: 1px solid rgba(2, 167, 90, 0.25);
 	border-radius: 12px;
 	padding: 14px 18px;
 	margin-bottom: 24px;
@@ -397,7 +404,7 @@ input:focus,
 select:focus {
 	border-color: var(--accent);
 	background: var(--bg-card);
-	box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+	box-shadow: 0 0 0 4px rgba(2, 167, 90, 0.1);
 	transform: translateY(-1px);
 }
 
@@ -476,7 +483,7 @@ input.invalid {
 	top: 2px;
 	width: 5px;
 	height: 10px;
-	border: solid var(--bg-primary);
+	border: solid #ffffff;
 	border-width: 0 2px 2px 0;
 	transform: rotate(45deg);
 }
@@ -498,7 +505,7 @@ input.invalid {
 
 .checkbox-label.error .checkbox-custom {
 	border-color: var(--error);
-	box-shadow: 0 0 0 4px rgba(255, 69, 58, 0.1);
+	box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
 }
 
 .checkbox-error {
@@ -557,7 +564,7 @@ input.invalid {
 .file-input:focus + .file-label {
 	border-color: var(--accent);
 	border-style: solid;
-	box-shadow: 0 0 0 4px rgba(201, 203, 216, 0.08);
+	box-shadow: 0 0 0 4px rgba(2, 167, 90, 0.1);
 }
 
 .file-icon {
@@ -598,12 +605,12 @@ input.invalid {
 	border-radius: 12px;
 	font-size: 15px;
 	font-weight: 600;
-	color: #0d0d0f;
+	color: #ffffff;
 	cursor: pointer;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	position: relative;
 	overflow: hidden;
-	box-shadow: 0 8px 24px rgba(201, 203, 216, 0.15), 0 2px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 4px 16px rgba(2, 167, 90, 0.2);
 	letter-spacing: 0.3px;
 	max-width: 100%;
 	box-sizing: border-box;
@@ -632,13 +639,12 @@ input.invalid {
 .btn:hover {
 	transform: translateY(-2px);
 	background: var(--accent-hover);
-	box-shadow: 0 12px 32px rgba(201, 203, 216, 0.25),
-		0 4px 12px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 8px 24px rgba(2, 167, 90, 0.3);
 }
 
 .btn:active {
 	transform: translateY(0);
-	box-shadow: 0 4px 16px rgba(201, 203, 216, 0.2);
+	box-shadow: 0 2px 8px rgba(2, 167, 90, 0.25);
 }
 
 .btn-next,
@@ -708,7 +714,7 @@ input.invalid {
 
 .login-link a:hover {
 	color: var(--accent-hover);
-	text-shadow: 0 0 20px rgba(201, 203, 216, 0.3);
+	text-shadow: none;
 }
 
 /* Responsive design for mobile devices */

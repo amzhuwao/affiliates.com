@@ -28,7 +28,7 @@
     padding: 32px;
     max-width: 440px;
     width: 90%;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 1px rgba(201, 203, 216, 0.15);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15), 0 0 1px rgba(2, 167, 90, 0.15);
     position: relative;
     transform: scale(0.9) translateY(20px);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -77,12 +77,12 @@
 }
 
 .modal-icon.warning {
-    background: linear-gradient(135deg, rgba(255, 159, 10, 0.2) 0%, rgba(255, 159, 10, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 193, 7, 0.1) 100%);
     color: var(--warning);
 }
 
 .modal-icon.danger {
-    background: linear-gradient(135deg, rgba(255, 69, 58, 0.2) 0%, rgba(255, 69, 58, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2) 0%, rgba(220, 53, 69, 0.1) 100%);
     color: var(--error);
 }
 
@@ -150,43 +150,43 @@
 }
 
 .modal-btn-cancel:hover {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border-color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.1);
+    box-shadow: 0 4px 16px rgba(2, 167, 90, 0.15);
 }
 
 .modal-btn-confirm {
     background: var(--accent);
-    color: var(--bg-primary);
+    color: #ffffff;
     border: 1.5px solid transparent;
-    box-shadow: 0 4px 16px rgba(201, 203, 216, 0.15);
+    box-shadow: 0 4px 16px rgba(2, 167, 90, 0.2);
 }
 
 .modal-btn-confirm:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(201, 203, 216, 0.25);
+    box-shadow: 0 8px 24px rgba(2, 167, 90, 0.3);
 }
 
 .modal-btn-confirm.warning {
     background: var(--warning);
-    box-shadow: 0 4px 16px rgba(255, 159, 10, 0.2);
+    box-shadow: 0 4px 16px rgba(255, 193, 7, 0.2);
 }
 
 .modal-btn-confirm.warning:hover {
-    background: #ffaa1a;
-    box-shadow: 0 8px 24px rgba(255, 159, 10, 0.35);
+    background: #ffd54f;
+    box-shadow: 0 8px 24px rgba(255, 193, 7, 0.35);
 }
 
 .modal-btn-confirm.danger {
     background: var(--error);
-    box-shadow: 0 4px 16px rgba(255, 69, 58, 0.2);
+    box-shadow: 0 4px 16px rgba(220, 53, 69, 0.2);
 }
 
 .modal-btn-confirm.danger:hover {
-    background: #ff5a4a;
-    box-shadow: 0 8px 24px rgba(255, 69, 58, 0.35);
+    background: #e35d6a;
+    box-shadow: 0 8px 24px rgba(220, 53, 69, 0.35);
 }
 
 .modal-btn:active {
@@ -206,6 +206,7 @@
         width: 100%;
     }
 }
+
 
 
 
