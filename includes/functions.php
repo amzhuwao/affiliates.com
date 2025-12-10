@@ -42,7 +42,7 @@ function generateAffiliateId($db)
 function buildReferralLink($affiliateId)
 {
     $company = COMPANY_WHATSAPP;
-    $text = "I've been referred by Affiliate " . $affiliateId;
+    $text = "Hi, I've been referred by Affiliate " . $affiliateId . ". Interested in Get-Solar Promotion.";
     return "https://wa.me/{$company}?text=" . urlencode($text);
 }
 
@@ -62,7 +62,7 @@ function buildProgramWaLink($affiliate_id, $program)
     $wa = getProgramWhatsApp($program);
     if (!$wa) return '#';
 
-    $message = urlencode("I've been referred by Affiliate " . $affiliate_id);
+    $message = urlencode("Hi, I've been referred by Affiliate " . $affiliate_id . ". Interested in Get-Solar Promotion.");
     return "https://wa.me/{$wa}?text={$message}";
 }
 
