@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // includes/functions.php
 // 1. Define the correct path to the PHPMailer files
 // This assumes the structure: email_test/PHPMailer/src/
@@ -6,7 +9,6 @@ $path_to_phpmailer = __DIR__ . '/../PHPMailer/src/';
 
 // Use namespaces for clarity
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // 2. Load the necessary PHPMailer classes
@@ -17,7 +19,11 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/smtp_config.php';
 
 // Define the sender's details (constants with safe fallback)
-if (!defined('MAIL_FROM')) define('MAIL_FROM', 'amzhuwao@gmail.com'); // This should usually match your SMTP username
+if (!defined('MAIL_FROM')) {
+    // Prefer SMTP_USERNAME if present to avoid sender mismatch rejections
+    $defaultFrom = defined('SMTP_USERNAME') ? SMTP_USERNAME : 'no-reply@example.com';
+    define('MAIL_FROM', $defaultFrom);
+}
 if (!defined('MAIL_FROM_NAME')) define('MAIL_FROM_NAME', 'Affiliate Program');
 
 function generateAffiliateId($db)
@@ -143,19 +149,12 @@ function sendQuotationStatusEmail(array $affiliate, array $quotation, string $ol
         $mail->SMTPDebug = 0; // change to SMTP::DEBUG_SERVER to enable debug output
         $mail->isSMTP();
         $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
-        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->SMTPAuth = true;
         $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
         $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
-        // Map textual secure setting to PHPMailer constants
-        if (defined('SMTP_SECURE')) {
-            $secure = strtolower(SMTP_SECURE);
-            if ($secure === 'ssl') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            } elseif ($secure === 'tls' || $secure === 'starttls') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            }
-        }
-        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
+
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
 
         // Email Headers
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
@@ -185,16 +184,20 @@ function sendQuotationStatusEmail(array $affiliate, array $quotation, string $ol
         $mail->send();
         return true;
     } catch (Exception $e) {
-        error_log("Quote Mail error: {$mail->ErrorInfo}");
+        echo ("Quote Mail error: {$mail->ErrorInfo}");
         return false;
     }
 }
 
 function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus, string $adminName = 'Admin')
 {
-    if (empty($affiliate['email'])) return false; // no email to send to
+    if (empty($affiliate['email'])) {
+        error_log('sendStatusEmail: affiliate has no email. ID=' . ($affiliate['id'] ?? $affiliate['affiliate_id'] ?? 'unknown'));
+        return false; // no email to send to
+    }
 
     $to = $affiliate['email'];
+    error_log('sendStatusEmail: starting send to ' . $to . ' for affiliate ' . ($affiliate['affiliate_id'] ?? $affiliate['id'] ?? 'unknown'));
     $subject = "Account status changed: {$newStatus}";
     $time = date('Y-m-d H:i:s');
     $message = "Hello " . ($affiliate['full_name'] ?? $affiliate['affiliate_id']) . ",\n\n";
@@ -215,33 +218,40 @@ function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus,
     // Try sending via PHPMailer (SMTP) first
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = 0; // set to SMTP::DEBUG_SERVER for debugging
+        // Send via SMTP with minimal connection-level debug to error_log for diagnostics
+        $mail->Debugoutput = 'error_log';
         $mail->isSMTP();
         $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
-        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->SMTPAuth = true;
         $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
         $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
-        if (defined('SMTP_SECURE')) {
-            $secure = strtolower(SMTP_SECURE);
-            if ($secure === 'ssl') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            } elseif ($secure === 'tls' || $secure === 'starttls') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            }
-        }
-        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
 
-        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $fromAddress = MAIL_FROM;
+        $fromName = MAIL_FROM_NAME;
+        // Safety: if MAIL_FROM is empty but SMTP_USERNAME exists, use that as sender
+        if (empty($fromAddress) && defined('SMTP_USERNAME')) {
+            $fromAddress = SMTP_USERNAME;
+        }
+        $mail->setFrom($fromAddress, $fromName);
         $mail->addAddress($to, $affiliate['full_name'] ?? '');
+
+        // Also notify admin if ADMIN_EMAIL is configured
+        if (defined('ADMIN_EMAIL') && !empty(ADMIN_EMAIL)) {
+            $mail->addAddress(ADMIN_EMAIL, 'Admin');
+        }
+
         $mail->isHTML(false);
         $mail->Subject = $subject;
         $mail->Body = $message;
 
         $mail->send();
+        error_log('sendStatusEmail: Mail sent to ' . $to . ' for affiliate ' . $affiliate['affiliate_id'] . ' status ' . $oldStatus . ' -> ' . $newStatus);
         return true;
     } catch (Exception $e) {
         // Log both the Exception message and PHPMailer's ErrorInfo for diagnosis
-        error_log("Status Mail error: " . $e->getMessage() . " | PHPMailer: " . $mail->ErrorInfo);
+        error_log('sendStatusEmail: Mail error: ' . $e->getMessage() . ' | PHPMailer: ' . $mail->ErrorInfo);
         // Fallback to PHP mail() with proper headers
         $headers = [];
         $headers[] = 'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM . '>';
@@ -250,7 +260,7 @@ function sendStatusEmail(array $affiliate, string $oldStatus, string $newStatus,
         $headers[] = 'Content-type: text/plain; charset=utf-8';
         $ok = @mail($to, $subject, $message, implode("\r\n", $headers));
         if (!$ok) {
-            error_log("Fallback mail() failed for {$to}");
+            error_log('sendStatusEmail: Fallback mail() failed for ' . $to);
         }
         return $ok;
     }
@@ -264,9 +274,9 @@ function sendProgramChangeRequest(array $affiliate, string $requestedProgramCode
 {
     $programLabel = ($requestedProgramCode === 'TV') ? 'TechVouch' : 'GetSolar';
 
-    $adminEmail = defined('MAIL_FROM') ? MAIL_FROM : null;
+    $adminEmail = defined('ADMIN_EMAIL') ? ADMIN_EMAIL : null;
     if (empty($adminEmail)) {
-        error_log('sendProgramChangeRequest: no admin email configured (MAIL_FROM)');
+        error_log('sendProgramChangeRequest: no admin email configured (ADMIN_EMAIL)');
         return false;
     }
 
@@ -284,19 +294,11 @@ function sendProgramChangeRequest(array $affiliate, string $requestedProgramCode
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host = defined('SMTP_HOST') ? SMTP_HOST : 'localhost';
-        $mail->SMTPAuth = (defined('SMTP_USERNAME') && defined('SMTP_PASSWORD')) ? true : false;
+        $mail->SMTPAuth = true;
         $mail->Username = defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
         $mail->Password = defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
-        if (defined('SMTP_SECURE')) {
-            $secure = strtolower(SMTP_SECURE);
-            if ($secure === 'ssl') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            } elseif ($secure === 'tls' || $secure === 'starttls') {
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            }
-        }
-        $mail->Port = defined('SMTP_PORT') ? SMTP_PORT : 25;
-
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
         $mail->addAddress($adminEmail);
         // allow admin to reply directly to the affiliate

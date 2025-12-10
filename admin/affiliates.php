@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // admin/affiliates.php
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/auth.php';
@@ -55,23 +58,23 @@ $rows = $stmt->fetchAll();
 <body>
 
     <div class="affiliates-container">
-    <div class="affiliates-card">
-        <!-- Logo and Back navigation -->
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
-            <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
-            <a href="../dashboard.php" class="back-link">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                Back to Dashboard
-            </a>
-        </div>
+        <div class="affiliates-card">
+            <!-- Logo and Back navigation -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+                <img src="../branding/ANAKO LOGO.png" alt="ANAKO Logo" style="height: 40px; width: auto;">
+                <a href="../dashboard.php" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
 
-        <!-- Page header -->
-        <div class="page-header">
-            <h1 class="page-title">Affiliate Management</h1>
-            <p class="page-subtitle">Manage and monitor all affiliate accounts</p>
-        </div>
+            <!-- Page header -->
+            <div class="page-header">
+                <h1 class="page-title">Affiliate Management</h1>
+                <p class="page-subtitle">Manage and monitor all affiliate accounts</p>
+            </div>
 
             <!-- Success/Error messages -->
             <?php if ($msg === 'updated'): ?>
@@ -407,7 +410,7 @@ $rows = $stmt->fetchAll();
             document.body.appendChild(textarea);
             textarea.focus();
             textarea.select();
-            
+
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
@@ -419,7 +422,7 @@ $rows = $stmt->fetchAll();
                 console.error('Fallback copy failed: ', err);
                 showCopyToast('Failed to copy link', true);
             }
-            
+
             document.body.removeChild(textarea);
         }
 
@@ -445,16 +448,16 @@ $rows = $stmt->fetchAll();
                 `;
                 document.body.appendChild(toast);
             }
-            
+
             toast.textContent = message;
             toast.style.background = isError ? '#ff453a' : '#34c759';
             toast.style.color = '#fff';
             toast.style.opacity = '1';
             toast.style.transform = 'translateY(0)';
-            
+
             // Clear any existing timeout
             if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
-            
+
             toast.hideTimeout = setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(10px)';

@@ -2,8 +2,8 @@
 // includes/config.php
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'affiliates_db');
-define('DB_USER', 'root');
-define('DB_PASS', '@Fl011326'); // XAMPP default empty @Fl011326
+define('DB_USER', 'admin');
+define('DB_PASS', '%Uy[SV=k2aHF');
 
 // Company WhatsApp number (international, no +): e.g. 263771234567
 define('COMPANY_WHATSAPP', '263771234567');
